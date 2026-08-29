@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EuroJackpot Set — Draw Results & Expected Value</title>
+<meta name="description" content="EuroJackpot results, archive, statistics and Expected Value calculator using the supplied EV formula.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%23c8a24a' stroke-width='2.5'/%3E%3Cpath d='M16 6v20M6 16h20' stroke='%23c8a24a' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=jet-brains-mono@400,700&display=swap">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);
+  --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+  --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+
+  --space-1:.25rem; --space-2:.5rem; --space-3:.75rem; --space-4:1rem;
+  --space-5:1.25rem; --space-6:1.5rem; --space-8:2rem; --space-10:2.5rem;
+  --space-12:3rem; --space-16:4rem;
+
+  --radius-sm:6px; --radius:10px; --radius-lg:16px; --radius-full:999px;
+  --font-sans:'Satoshi','Inter',system-ui,-apple-system,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --shadow-1:0 1px 2px rgba(8,10,20,.10);
+  --shadow-2:0 8px 28px rgba(8,10,20,.16);
+}
+
+/* Deep-midnight + gold: the art direction of a draw night broadcast */
+[data-theme="dark"]{
+  --color-bg:#0c1020;
+  --color-surface:#131829;
+  --color-surface-2:#191f33;
+  --color-surface-offset:#1f263c;
+  --color-border:#2a3350;
+  --color-divider:#212a42;
+  --color-text:#eef1f8;
+  --color-text-muted:#9aa3bd;
+  --color-text-faint:#6a7391;
+  --color-text-inverse:#0c1020;
+  --color-primary:#d8b262;
+  --color-primary-hover:#e6c47c;
+  --color-primary-soft:rgba(216,178,98,.14);
+  --color-good:#4bbf8a;
+  --color-good-soft:rgba(75,191,138,.14);
+  --color-bad:#f0736a;
+  --color-bad-soft:rgba(240,115,106,.14);
+  --color-info:#6f9ef0;
+  --color-info-soft:rgba(111,158,240,.14);
+  --ball-bg:linear-gradient(160deg,#f4f6fb,#c9d0e2);
+  --ball-text:#101526;
+  --shadow-2:0 10px 34px rgba(0,0,0,.45);
+}
+[data-theme="light"]{
+  --color-bg:#f6f5f1;
+  --color-surface:#fffefb;
+  --color-surface-2:#faf9f5;
+  --color-surface-offset:#efece5;
+  --color-border:#dbd6cb;
+  --color-divider:#e6e2d9;
+  --color-text:#1d2130;
+  --color-text-muted:#6b7183;
+  --color-text-faint:#a3a8b6;
+  --color-text-inverse:#fffefb;
+  --color-primary:#8a6414;
+  --color-primary-hover:#6d4e0c;
+  --color-primary-soft:rgba(138,100,20,.10);
+  --color-good:#1c7a52;
+  --color-good-soft:rgba(28,122,82,.10);
+  --color-bad:#b23a2f;
+  --color-bad-soft:rgba(178,58,47,.10);
+  --color-info:#2f5cb0;
+  --color-info-soft:rgba(47,92,176,.10);
+  --ball-bg:linear-gradient(160deg,#232a41,#141a2b);
+  --ball-text:#f7f4ea;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--color-bg);color:var(--color-text);
+  font-family:var(--font-sans);font-size:var(--text-base);line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{margin:0;line-height:1.2;letter-spacing:-.015em;font-weight:700}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:2px;border-radius:var(--radius-sm)}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+::selection{background:var(--color-primary-soft)}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+
+.shell{max-width:1320px;margin:0 auto;padding:0 var(--space-5) var(--space-16)}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.topbar{
+  position:sticky;top:0;z-index:40;
+  background:color-mix(in oklab,var(--color-bg) 88%,transparent);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--color-divider);
+}
+.topbar-in{max-width:1320px;margin:0 auto;padding:var(--space-3) var(--space-5);
+  display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:var(--space-3);margin-right:auto}
+.brand svg{color:var(--color-primary);flex:none}
+.brand-name{font-size:var(--text-sm);font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.brand-sub{font-size:var(--text-xs);color:var(--color-text-faint);letter-spacing:.02em}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
+  padding:var(--space-2) var(--space-4);border-radius:var(--radius);
+  border:1px solid var(--color-border);background:var(--color-surface);
+  font-size:var(--text-sm);font-weight:500;transition:.18s var(--ease);
+  white-space:nowrap;
+}
+.btn:hover{background:var(--color-surface-offset);border-color:var(--color-text-faint)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--color-primary);border-color:var(--color-primary);color:var(--color-text-inverse);font-weight:700}
+.btn-primary:hover{background:var(--color-primary-hover);border-color:var(--color-primary-hover)}
+.btn-ghost{background:transparent}
+.btn-icon{padding:var(--space-2);width:38px;height:38px}
+.btn-sm{padding:var(--space-1) var(--space-3);font-size:var(--text-xs)}
+.btn-danger:hover{color:var(--color-bad);border-color:var(--color-bad)}
+
+.status-pill{
+  display:inline-flex;align-items:center;gap:var(--space-2);
+  padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);
+  border:1px solid var(--color-border);background:var(--color-surface);
+  font-size:var(--text-xs);font-variant-numeric:tabular-nums;
+}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--color-text-faint);flex:none}
+.dot.live{background:var(--color-good);box-shadow:0 0 0 0 var(--color-good);animation:pulse 2.2s infinite}
+.dot.paused{background:var(--color-text-faint)}
+.dot.err{background:var(--color-bad)}
+.dot.load{background:var(--color-info);animation:pulse 1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 currentColor;opacity:1}70%{box-shadow:0 0 0 7px transparent;opacity:.75}100%{box-shadow:0 0 0 0 transparent;opacity:1}}
+
+/* ============================================================
+   HERO / LATEST
+   ============================================================ */
+.page-head{padding:var(--space-10) 0 var(--space-6)}
+.eyebrow{font-size:var(--text-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--color-primary);font-weight:700}
+h1{font-size:var(--text-xl);margin-top:var(--space-2)}
+.lede{color:var(--color-text-muted);font-size:var(--text-sm);max-width:64ch;margin-top:var(--space-2)}
+
+.grid-latest{display:grid;gap:var(--space-4);grid-template-columns:repeat(auto-fill,minmax(320px,1fr));align-items:start}
+
+.card{
+  background:var(--color-surface);border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);padding:var(--space-5);
+}
+.featured{
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(120% 140% at 100% 0%,var(--color-primary-soft),transparent 60%),
+    var(--color-surface);
+}
+.featured::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 60%,var(--color-primary-soft));opacity:.5}
+.card>*{position:relative;z-index:1}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-3)}
+.game-name{font-size:var(--text-lg);font-weight:700}
+.game-meta{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px;font-variant-numeric:tabular-nums}
+.tag{
+  font-size:var(--text-xs);padding:2px var(--space-2);border-radius:var(--radius-full);
+  border:1px solid var(--color-border);color:var(--color-text-muted);white-space:nowrap
+}
+.tag.new{color:var(--color-good);border-color:var(--color-good);background:var(--color-good-soft);font-weight:700}
+
+.balls{display:flex;flex-wrap:wrap;gap:var(--space-2);margin:var(--space-4) 0 0}
+.ball{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:var(--ball-bg);color:var(--ball-text);
+  font-family:var(--font-mono);font-weight:700;font-size:var(--text-sm);
+  box-shadow:var(--shadow-1);flex:none;
+  animation:pop .34s var(--ease) both;
+}
+.ball.sm{width:34px;height:34px;font-size:var(--text-xs)}
+.ball.special{background:linear-gradient(160deg,var(--color-primary-hover),var(--color-primary));color:var(--color-text-inverse)}
+.ball.match{outline:2px solid var(--color-primary);outline-offset:2px}
+@keyframes pop{from{transform:scale(.6) translateY(6px);opacity:0}to{transform:none;opacity:1}}
+.ball-sep{align-self:center;color:var(--color-text-faint);font-size:var(--text-xs);padding:0 2px}
+
+.kv{display:flex;flex-wrap:wrap;gap:var(--space-5);margin-top:var(--space-5);
+  padding-top:var(--space-4);border-top:1px solid var(--color-divider)}
+.kv div{min-width:96px}
+.kv dt{font-size:var(--text-xs);color:var(--color-text-faint);text-transform:uppercase;letter-spacing:.08em}
+.kv dd{margin:2px 0 0;font-family:var(--font-mono);font-size:var(--text-sm);font-variant-numeric:tabular-nums}
+.kv dd.big{font-size:var(--text-lg);color:var(--color-primary);font-weight:700}
+
+/* ============================================================
+   LAYOUT: main + sidebar
+   ============================================================ */
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:var(--space-6);margin-top:var(--space-10);align-items:start}
+@media (max-width:1080px){.cols{grid-template-columns:minmax(0,1fr)}}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-4);flex-wrap:wrap}
+h2{font-size:var(--text-lg)}
+.count{font-size:var(--text-xs);color:var(--color-text-muted);font-variant-numeric:tabular-nums}
+
+/* filters */
+.filters{display:grid;gap:var(--space-3);grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  background:var(--color-surface-2);border:1px solid var(--color-border);
+  border-radius:var(--radius-lg);padding:var(--space-4);margin-bottom:var(--space-4)}
+.field{display:flex;flex-direction:column;gap:var(--space-1);min-width:0}
+.field label{font-size:var(--text-xs);color:var(--color-text-faint);text-transform:uppercase;letter-spacing:.08em}
+.input,select.input{
+  width:100%;padding:var(--space-2) var(--space-3);border-radius:var(--radius);
+  border:1px solid var(--color-border);background:var(--color-bg);
+  font-size:var(--text-sm);min-width:0;
+}
+.input::placeholder{color:var(--color-text-faint)}
+textarea.input{font-family:var(--font-mono);font-size:var(--text-xs);line-height:1.6;resize:vertical}
+.field.wide{grid-column:span 2}
+@media (max-width:560px){.field.wide{grid-column:span 1}}
+.chips{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+.chip{
+  font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);
+  border:1px solid var(--color-border);background:var(--color-bg);color:var(--color-text-muted)
+}
+.chip[aria-pressed="true"]{background:var(--color-primary-soft);border-color:var(--color-primary);color:var(--color-primary);font-weight:700}
+
+/* table */
+.tablewrap{border:1px solid var(--color-border);border-radius:var(--radius-lg);overflow:hidden;background:var(--color-surface)}
+table{width:100%;border-collapse:collapse}
+thead th{
+  text-align:left;font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;
+  color:var(--color-text-faint);font-weight:700;padding:var(--space-3) var(--space-4);
+  background:var(--color-surface-2);border-bottom:1px solid var(--color-border);white-space:nowrap
+}
+thead th button{background:none;border:0;padding:0;font:inherit;color:inherit;display:inline-flex;gap:4px;align-items:center;
+  text-transform:inherit;letter-spacing:inherit}
+tbody td{padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-divider);font-size:var(--text-sm);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr{transition:background .15s var(--ease)}
+tbody tr:hover{background:var(--color-surface-2)}
+tbody tr.is-new{background:var(--color-good-soft)}
+td.num{font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.balls-cell{min-width:230px}
+td.balls-cell .balls{margin:0}
+.rowbtn{background:none;border:0;padding:0;font:inherit;color:var(--color-primary);font-weight:700;font-size:var(--text-xs)}
+@media (max-width:860px){
+  thead{display:none}
+  tbody td{display:flex;justify-content:space-between;gap:var(--space-4);border:0;padding:var(--space-2) var(--space-4)}
+  tbody td::before{content:attr(data-l);font-size:var(--text-xs);color:var(--color-text-faint);text-transform:uppercase;letter-spacing:.08em}
+  tbody tr{display:block;border-bottom:1px solid var(--color-divider);padding:var(--space-3) 0}
+}
+
+/* states */
+.state{padding:var(--space-12) var(--space-6);text-align:center;color:var(--color-text-muted)}
+.state h3{font-size:var(--text-base);color:var(--color-text)}
+.state p{font-size:var(--text-sm);margin:var(--space-2) auto var(--space-5);max-width:46ch}
+.state svg{color:var(--color-text-faint);margin-bottom:var(--space-3)}
+.skel{height:14px;border-radius:var(--radius-sm);background:linear-gradient(90deg,var(--color-surface-offset),var(--color-surface-2),var(--color-surface-offset));background-size:200% 100%;animation:sweep 1.4s infinite linear}
+@keyframes sweep{from{background-position:200% 0}to{background-position:-200% 0}}
+.skel-ball{width:44px;height:44px;border-radius:50%}
+.banner{
+  display:flex;gap:var(--space-3);align-items:flex-start;
+  padding:var(--space-3) var(--space-4);border-radius:var(--radius);
+  border:1px solid var(--color-bad);background:var(--color-bad-soft);
+  font-size:var(--text-sm);margin-bottom:var(--space-4)
+}
+.banner.info{border-color:var(--color-info);background:var(--color-info-soft)}
+.banner strong{display:block}
+.banner .btn{margin-left:auto}
+
+/* sidebar panels */
+.panel{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);margin-bottom:var(--space-4);overflow:hidden}
+.panel>summary{
+  list-style:none;cursor:pointer;padding:var(--space-4);display:flex;align-items:center;gap:var(--space-3);
+  font-size:var(--text-sm);font-weight:700
+}
+.panel>summary::-webkit-details-marker{display:none}
+.panel>summary .caret{margin-left:auto;transition:transform .2s var(--ease);color:var(--color-text-faint)}
+.panel[open]>summary .caret{transform:rotate(180deg)}
+.panel-body{padding:0 var(--space-4) var(--space-4);display:grid;gap:var(--space-3)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);font-size:var(--text-sm)}
+.row span.k{color:var(--color-text-muted)}
+.row .v{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.switch{display:flex;align-items:center;gap:var(--space-3);font-size:var(--text-sm)}
+input[type="checkbox"]{width:18px;height:18px;accent-color:var(--color-primary)}
+input[type="range"]{width:100%;accent-color:var(--color-primary)}
+.hint{font-size:var(--text-xs);color:var(--color-text-faint);line-height:1.5}
+.freq{display:grid;gap:var(--space-2)}
+.freq-row{display:grid;grid-template-columns:34px 1fr 30px;align-items:center;gap:var(--space-2)}
+.bar{height:8px;border-radius:var(--radius-full);background:var(--color-surface-offset);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--color-primary);border-radius:inherit;transition:width .5s var(--ease)}
+.freq-row .n{font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-muted);text-align:right}
+
+/* drawer */
+.drawer{
+  position:fixed;inset:0;z-index:60;display:none;
+}
+.drawer[open],.drawer.show{display:block}
+.drawer-bg{position:absolute;inset:0;background:rgba(4,6,14,.6);backdrop-filter:blur(2px)}
+.drawer-panel{
+  position:absolute;top:0;right:0;height:100%;width:min(460px,100%);
+  background:var(--color-surface);border-left:1px solid var(--color-border);
+  padding:var(--space-6);overflow:auto;box-shadow:var(--shadow-2);
+  animation:slide .28s var(--ease)
+}
+@keyframes slide{from{transform:translateX(24px);opacity:0}to{transform:none;opacity:1}}
+.drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-5)}
+pre.json{
+  margin:0;padding:var(--space-4);border-radius:var(--radius);background:var(--color-bg);
+  border:1px solid var(--color-border);font-family:var(--font-mono);font-size:var(--text-xs);
+  overflow:auto;max-height:320px;color:var(--color-text-muted);line-height:1.6
+}
+
+/* log */
+.log{font-family:var(--font-mono);font-size:var(--text-xs);max-height:180px;overflow:auto;display:grid;gap:4px}
+.log div{display:flex;gap:var(--space-2)}
+.log time{color:var(--color-text-faint);flex:none}
+.log .ok{color:var(--color-good)}
+.log .no{color:var(--color-bad)}
+.log .in{color:var(--color-info)}
+
+/* toasts */
+.toasts{position:fixed;bottom:var(--space-5);left:50%;transform:translateX(-50%);z-index:80;display:grid;gap:var(--space-2);width:min(420px,calc(100% - 2rem))}
+.toast{
+  display:flex;gap:var(--space-3);align-items:center;
+  background:var(--color-surface);border:1px solid var(--color-border);
+  border-radius:var(--radius);padding:var(--space-3) var(--space-4);
+  box-shadow:var(--shadow-2);font-size:var(--text-sm);animation:pop .25s var(--ease)
+}
+.toast.good{border-color:var(--color-good)}
+.toast.bad{border-color:var(--color-bad)}
+
+footer{margin-top:var(--space-12);padding-top:var(--space-5);border-top:1px solid var(--color-divider);
+  font-size:var(--text-xs);color:var(--color-text-faint);display:flex;gap:var(--space-4);flex-wrap:wrap;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-label="Drawline logo" role="img">
+        <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 3v26M3 16h26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="4.2" fill="currentColor"/>
+      </svg>
+      <div>
+        <div class="brand-name">Drawline</div>
+        <div class="brand-sub">Lottery draw results viewer</div>
+      </div>
+    </div>
+
+    <span class="status-pill" id="statusPill">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Idle</span>
+    </span>
+
+    <span class="status-pill" id="nextPill" title="Time until the next automatic poll">
+      Next poll <strong id="countdown" style="margin-left:4px">—</strong>
+    </span>
+
+    <button class="btn" id="btnPoll" aria-pressed="true">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="2.5" width="3.5" height="11" rx="1" fill="currentColor"/><rect x="9.5" y="2.5" width="3.5" height="11" rx="1" fill="currentColor"/></svg>
+      <span id="btnPollLabel">Pause</span>
+    </button>
+
+    <button class="btn btn-primary" id="btnRefresh">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.9-4.16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M13.6 2v2.6H11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Refresh
+    </button>
+
+    <button class="btn btn-icon btn-ghost" id="btnTheme" title="Toggle colour theme" aria-label="Toggle colour theme">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" id="themeIcon"></svg>
+    </button>
+  </div>
+</header>
+
+<main class="shell">
+
+  <div class="page-head">
+    <div class="eyebrow">Live results desk</div>
+    <h1>Draw results, polled and archived automatically</h1>
+    <p class="lede">Drawline reads draws from a JSON endpoint, keeps a searchable local archive in your browser, and ships with an
+      embedded mock API client so the whole thing is testable without a live backend.</p>
+  </div>
+
+  <div id="storageBanner"></div>
+
+  <section aria-labelledby="latestH">
+    <div class="section-head">
+      <h2 id="latestH">Latest draws</h2>
+      <span class="count" id="latestMeta">—</span>
+    </div>
+    <div class="grid-latest" id="latestGrid"></div>
+  </section>
+
+  <div class="cols">
+    <section aria-labelledby="histH">
+      <div class="section-head">
+        <h2 id="histH">Archive</h2>
+        <span class="count" id="histMeta">—</span>
+      </div>
+
+      <div id="errorSlot"></div>
+
+      <div class="filters" role="search">
+        <div class="field wide">
+          <label for="fQuery">Search</label>
+          <input class="input" id="fQuery" type="search" placeholder="Draw ID, game, or a number like 17" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="fGame">Game</label>
+          <select class="input" id="fGame"><option value="">All games</option></select>
+        </div>
+        <div class="field">
+          <label for="fFrom">From</label>
+          <input class="input" id="fFrom" type="date">
+        </div>
+        <div class="field">
+          <label for="fTo">To</label>
+          <input class="input" id="fTo" type="date">
+        </div>
+        <div class="field">
+          <label for="fJackpot">Min jackpot (€)</label>
+          <input class="input" id="fJackpot" type="number" min="0" step="100000" placeholder="0">
+        </div>
+        <div class="field">
+          <label for="fSort">Sort</label>
+          <select class="input" id="fSort">
+            <option value="date-desc">Newest first</option>
+            <option value="date-asc">Oldest first</option>
+            <option value="jackpot-desc">Jackpot high → low</option>
+            <option value="jackpot-asc">Jackpot low → high</option>
+            <option value="game">Game A → Z</option>
+          </select>
+        </div>
+        <div class="field wide">
+          <label>Quick filters</label>
+          <div class="chips">
+            <button class="chip" id="cWinners" aria-pressed="false">Jackpot won</button>
+            <button class="chip" id="cToday" aria-pressed="false">Last 24h</button>
+            <button class="chip" id="cNew" aria-pressed="false">Unseen</button>
+            <button class="btn btn-sm btn-ghost" id="btnClearFilters">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tablewrap">
+        <table id="table">
+          <thead>
+            <tr>
+              <th><button data-sort="date">Drawn <span class="hint" id="sortDate">↓</span></button></th>
+              <th>Game</th>
+              <th>Numbers</th>
+              <th><button data-sort="jackpot">Jackpot <span class="hint" id="sortJackpot"></span></button></th>
+              <th>Winners</th>
+              <th><span class="sr">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div id="tableState"></div>
+      </div>
+
+      <div class="section-head" style="margin-top:var(--space-4)">
+        <span class="count" id="pageMeta"></span>
+        <div class="chips">
+          <button class="btn btn-sm" id="btnMore">Show 25 more</button>
+          <button class="btn btn-sm" id="btnCsv">Export CSV</button>
+          <button class="btn btn-sm" id="btnJson">Export JSON</button>
+          <button class="btn btn-sm btn-danger" id="btnClear">Clear archive</button>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <details class="panel" open>
+        <summary>Data source <span class="caret">▾</span></summary>
+        <div class="panel-body">
+          <div class="field">
+            <label for="sMode">Client</label>
+            <select class="input" id="sMode">
+              <option value="mock">Embedded mock API</option>
+              <option value="live">Live JSON endpoint</option>
+            </select>
+          </div>
+          <div class="field" id="presetField" hidden>
+            <label for="sPreset">Preset</label>
+            <select class="input" id="sPreset"></select>
+          </div>
+          <div class="field" id="urlField" hidden>
+            <label for="sUrl">Endpoint URL(s)</label>
+            <textarea class="input" id="sUrl" rows="3" spellcheck="false" placeholder="https://api.example.com/draws"></textarea>
+          </div>
+          <div class="field">
+            <label for="sInterval">Poll interval — <span id="intervalLabel">20s</span></label>
+            <input id="sInterval" type="range" min="5" max="120" step="5" value="20">
+          </div>
+          <label class="switch"><input type="checkbox" id="sHidden" checked> Pause when tab is hidden</label>
+          <label class="switch"><input type="checkbox" id="sNotify" checked> Toast on new draw</label>
+          <div class="row"><span class="k">Last response</span><span class="v" id="mLast">—</span></div>
+          <div class="row"><span class="k">Latency</span><span class="v" id="mLatency">—</span></div>
+          <div class="row"><span class="k">Polls / errors</span><span class="v" id="mPolls">0 / 0</span></div>
+          <p class="hint">One URL per line — every line is polled in parallel and merged into the archive. Accepts an array of draws, or an object with a <code>draws</code>, <code>results</code>, <code>data</code>, <code>items</code> or <code>content</code> array. OPAP's <code>{ last, active }</code> shape and <code>winningNumbers.list</code> are handled natively.</p>
+          <p class="hint">Eurojackpot is not on OPAP's API, and the Nordic operators that publish it send no CORS headers — so it ships bundled inside this file as <code>embedded:ej</code> (also written out as <code>./eurojackpot.json</code>), rebuilt from <a href="https://www.veikkaus.fi/api/draw-results/v1/games/EJACKPOT" target="_blank" rel="noopener">Veikkaus</a> draw results. Point a preset at your own proxy if you need it live.</p>
+        </div>
+      </details>
+
+      <details class="panel" open>
+        <summary>Hot numbers <span class="caret">▾</span></summary>
+        <div class="panel-body">
+          <div class="chips" style="margin-bottom:var(--space-1)">
+            <button class="chip" id="freqHot" aria-pressed="true">Most drawn</button>
+            <button class="chip" id="freqCold" aria-pressed="false">Least drawn</button>
+          </div>
+          <div class="freq" id="freqList"></div>
+          <p class="hint" id="freqHint">Across the filtered archive.</p>
+        </div>
+      </details>
+
+
+      <details class="panel" open id="evPanel">
+        <summary>Expected Value (EV) <span class="caret">▾</span></summary>
+        <div class="panel-body">
+          <div style="background:#000;border-radius:10px;padding:8px;margin-bottom:14px">
+            <img alt="EV = p · b − (1 − p)" style="display:block;width:100%;height:auto;border-radius:6px" src="data:image/jpeg;base64,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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAx6GQA9AAAAAAAAAAAAAAAAAAAAMT6PhZr8KYmAAAAAAAAAAAAAAAAAAAAAAAAAAAAABimfGGavr5AAAAAAAAAAAAAAACnxmr4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACPMAYq8GQAYAGZ8wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/Z">
+          </div>
+
+          <p class="hint">
+            Υπολογισμός EV σε μονάδες πονταρίσματος για το <strong>5+2 jackpot</strong>.
+            Το μοντέλο χρησιμοποιεί την πιθανότητα jackpot και το τρέχον jackpot.
+            Δεν περιλαμβάνει τα μικρότερα prize tiers, φόρους ή μεταβολές του jackpot.
+          </p>
+
+          <div class="field">
+            <label for="evJackpot">Jackpot (€)</label>
+            <input class="input" id="evJackpot" type="number" min="0" step="100000" value="31000000">
+          </div>
+          <div class="field">
+            <label for="evStake">Κόστος στήλης (€)</label>
+            <input class="input" id="evStake" type="number" min="0.01" step="0.01" value="2.50">
+          </div>
+
+          <div class="row"><span class="k">P(5+2)</span><span class="v" id="evProb">1 / 139,838,160</span></div>
+          <div class="row"><span class="k">b = jackpot / stake</span><span class="v" id="evB">—</span></div>
+          <div class="row"><span class="k">EV ανά στήλη</span><span class="v" id="evValue">—</span></div>
+          <div class="row"><span class="k">ROI</span><span class="v" id="evRoi">—</span></div>
+
+          <div class="chips" style="margin-top:10px">
+            <span class="chip" id="evVerdict">—</span>
+          </div>
+
+          <p class="hint">
+            Τύπος: <code>EV = p · b − (1 − p)</code>, όπου <code>p</code> είναι η πιθανότητα
+            5+2 και <code>b</code> η μικτή επιστροφή jackpot ως πολλαπλάσιο της στήλης.
+          </p>
+        </div>
+      </details>
+
+      <details class="panel">
+        <summary>Mock API console <span class="caret">▾</span></summary>
+        <div class="panel-body">
+          <div class="field">
+            <label for="mLatencyR">Simulated latency — <span id="latLabel">240 ms</span></label>
+            <input id="mLatencyR" type="range" min="0" max="2000" step="20" value="240">
+          </div>
+          <div class="field">
+            <label for="mErrR">Error rate — <span id="errLabel">0%</span></label>
+            <input id="mErrR" type="range" min="0" max="100" step="5" value="0">
+          </div>
+          <div class="field">
+            <label for="mCadence">New mock draw every — <span id="cadLabel">45s</span></label>
+            <input id="mCadence" type="range" min="15" max="300" step="15" value="45">
+          </div>
+          <div class="chips">
+            <button class="btn btn-sm" id="btnForceDraw">Force new draw</button>
+            <button class="btn btn-sm" id="btnForceErr">Force one error</button>
+            <button class="btn btn-sm" id="btnSeed">Seed 40 draws</button>
+          </div>
+          <p class="hint">The mock client is a deterministic seeded generator behind the same async interface as <code>fetch</code>, so switching to a real endpoint changes one setting only.</p>
+        </div>
+      </details>
+
+      <details class="panel">
+        <summary>Request log <span class="caret">▾</span></summary>
+        <div class="panel-body"><div class="log" id="log"></div></div>
+      </details>
+    </aside>
+  </div>
+
+  <footer>
+    <span>Drawline — single-file client. All history stays in your browser.</span>
+    <span>Keys: <strong>/</strong> search · <strong>R</strong> refresh · <strong>P</strong> pause · <strong>Esc</strong> close</span>
+  </footer>
+</main>
+
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Draw detail">
+  <div class="drawer-bg" data-close></div>
+  <div class="drawer-panel" id="drawerPanel"></div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<!-- Bundled Eurojackpot feed (rebuilt from Veikkaus draw results). Replaced wholesale by build_eurojackpot_feed.py -->
+<script type="application/json" id="ejFeed">{"game":"eurojackpot","generatedAt":"2026-08-25T12:37:13.332261+00:00","source":"https://www.veikkaus.fi/api/draw-results/v1/games/EJACKPOT","count":58,"draws":[{"id":"eurojackpot-983","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-08-21T17:04:00+00:00","numbers":[25,35,45,46,50],"extra":{"label":"Euro numbers","numbers":[4,8]},"jackpot":31000000.0,"jackpotWinners":0,"totalWinners":615339,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-982","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-08-18T17:04:00+00:00","numbers":[15,22,24,34,42],"extra":{"label":"Euro numbers","numbers":[4,7]},"jackpot":22000000.0,"jackpotWinners":0,"totalWinners":518779,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-981","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-08-14T17:04:00+00:00","numbers":[5,26,28,30,40],"extra":{"label":"Euro numbers","numbers":[3,6]},"jackpot":17000000.0,"jackpotWinners":0,"totalWinners":650365,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-980","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-08-11T17:04:00+00:00","numbers":[4,11,12,16,30],"extra":{"label":"Euro numbers","numbers":[8,9]},"jackpot":10000000.0,"jackpotWinners":0,"totalWinners":488063,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-979","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-08-07T17:04:00+00:00","numbers":[1,3,6,13,23],"extra":{"label":"Euro numbers","numbers":[5,7]},"jackpot":32658025.0,"jackpotWinners":1,"totalWinners":860662,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-978","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-08-04T17:04:00+00:00","numbers":[3,17,30,35,43],"extra":{"label":"Euro numbers","numbers":[1,12]},"jackpot":23000000.0,"jackpotWinners":0,"totalWinners":427210,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-977","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-31T17:04:00+00:00","numbers":[4,10,20,40,41],"extra":{"label":"Euro numbers","numbers":[4,6]},"jackpot":17000000.0,"jackpotWinners":0,"totalWinners":615620,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-976","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-28T17:04:00+00:00","numbers":[11,25,40,41,45],"extra":{"label":"Euro numbers","numbers":[1,5]},"jackpot":10000000.0,"jackpotWinners":0,"totalWinners":402912,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-975","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-24T17:04:00+00:00","numbers":[4,6,8,17,22],"extra":{"label":"Euro numbers","numbers":[7,10]},"jackpot":71262143.1,"jackpotWinners":1,"totalWinners":943132,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-974","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-21T17:04:00+00:00","numbers":[4,8,10,17,37],"extra":{"label":"Euro numbers","numbers":[5,7]},"jackpot":59000000.0,"jackpotWinners":0,"totalWinners":705440,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-973","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-17T17:04:00+00:00","numbers":[6,21,31,47,48],"extra":{"label":"Euro numbers","numbers":[2,9]},"jackpot":50000000.0,"jackpotWinners":0,"totalWinners":701446,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-972","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-14T17:04:00+00:00","numbers":[5,6,17,34,36],"extra":{"label":"Euro numbers","numbers":[3,11]},"jackpot":40000000.0,"jackpotWinners":0,"totalWinners":539868,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-971","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-10T17:04:00+00:00","numbers":[13,25,28,42,45],"extra":{"label":"Euro numbers","numbers":[5,12]},"jackpot":32000000.0,"jackpotWinners":0,"totalWinners":632647,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-970","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-07T17:04:00+00:00","numbers":[6,16,24,41,46],"extra":{"label":"Euro numbers","numbers":[2,3]},"jackpot":23000000.0,"jackpotWinners":0,"totalWinners":477981,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-969","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-07-03T17:04:00+00:00","numbers":[4,9,20,25,28],"extra":{"label":"Euro numbers","numbers":[1,3]},"jackpot":17000000.0,"jackpotWinners":0,"totalWinners":677181,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-968","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-30T17:04:00+00:00","numbers":[12,19,34,44,50],"extra":{"label":"Euro numbers","numbers":[3,8]},"jackpot":10000000.0,"jackpotWinners":0,"totalWinners":501357,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-967","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-26T17:04:00+00:00","numbers":[17,25,35,39,41],"extra":{"label":"Euro numbers","numbers":[5,9]},"jackpot":87264546.9,"jackpotWinners":1,"totalWinners":931599,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-966","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-23T17:04:00+00:00","numbers":[24,27,43,48,50],"extra":{"label":"Euro numbers","numbers":[4,12]},"jackpot":74000000.0,"jackpotWinners":0,"totalWinners":572771,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-965","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-19T17:04:00+00:00","numbers":[16,27,37,42,45],"extra":{"label":"Euro numbers","numbers":[5,12]},"jackpot":65000000.0,"jackpotWinners":0,"totalWinners":713765,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-964","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-16T17:04:00+00:00","numbers":[9,26,29,37,42],"extra":{"label":"Euro numbers","numbers":[1,7]},"jackpot":54000000.0,"jackpotWinners":0,"totalWinners":585968,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-963","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-12T17:04:00+00:00","numbers":[2,4,14,18,28],"extra":{"label":"Euro numbers","numbers":[9,11]},"jackpot":45000000.0,"jackpotWinners":0,"totalWinners":705977,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-962","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-09T17:04:00+00:00","numbers":[1,14,22,39,48],"extra":{"label":"Euro numbers","numbers":[8,11]},"jackpot":35000000.0,"jackpotWinners":0,"totalWinners":477763,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-961","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-05T17:04:00+00:00","numbers":[21,23,44,47,50],"extra":{"label":"Euro numbers","numbers":[1,7]},"jackpot":27000000.0,"jackpotWinners":0,"totalWinners":640866,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-960","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-06-02T17:04:00+00:00","numbers":[2,36,38,40,46],"extra":{"label":"Euro numbers","numbers":[7,8]},"jackpot":18000000.0,"jackpotWinners":0,"totalWinners":440830,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-959","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-29T17:04:00+00:00","numbers":[3,20,21,42,49],"extra":{"label":"Euro numbers","numbers":[5,6]},"jackpot":10000000.0,"jackpotWinners":0,"totalWinners":691571,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-958","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-26T17:04:00+00:00","numbers":[5,11,23,33,42],"extra":{"label":"Euro numbers","numbers":[10,12]},"jackpot":120000000.0,"jackpotWinners":1,"totalWinners":1071650,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-957","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-22T17:04:00+00:00","numbers":[5,34,35,42,46],"extra":{"label":"Euro numbers","numbers":[3,5]},"jackpot":120000000.0,"jackpotWinners":0,"totalWinners":1512171,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-956","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-19T17:04:00+00:00","numbers":[10,36,37,39,47],"extra":{"label":"Euro numbers","numbers":[5,6]},"jackpot":118000000.0,"jackpotWinners":0,"totalWinners":1038008,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-955","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-15T17:04:00+00:00","numbers":[1,32,33,36,37],"extra":{"label":"Euro numbers","numbers":[7,12]},"jackpot":102000000.0,"jackpotWinners":0,"totalWinners":1019690,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-954","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-12T17:04:00+00:00","numbers":[7,15,19,28,35],"extra":{"label":"Euro numbers","numbers":[3,11]},"jackpot":87000000.0,"jackpotWinners":0,"totalWinners":900169,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-953","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-08T17:04:00+00:00","numbers":[3,17,18,31,41],"extra":{"label":"Euro numbers","numbers":[6,12]},"jackpot":76000000.0,"jackpotWinners":0,"totalWinners":818914,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-952","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-05T17:04:00+00:00","numbers":[1,30,33,34,43],"extra":{"label":"Euro numbers","numbers":[5,10]},"jackpot":64000000.0,"jackpotWinners":0,"totalWinners":583995,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-951","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-05-01T17:04:00+00:00","numbers":[10,11,13,16,27],"extra":{"label":"Euro numbers","numbers":[5,7]},"jackpot":55000000.0,"jackpotWinners":0,"totalWinners":932590,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-950","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-04-28T17:04:00+00:00","numbers":[19,20,41,43,46],"extra":{"label":"Euro numbers","numbers":[5,7]},"jackpot":45000000.0,"jackpotWinners":0,"totalWinners":537319,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-949","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-04-24T17:04:00+00:00","numbers":[6,21,29,39,44],"extra":{"label":"Euro numbers","numbers":[1,5]},"jackpot":36000000.0,"jackpotWinners":0,"totalWinners":675273,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-948","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-04-21T17:04:00+00:00","numbers":[31,32,36,39,47],"extra":{"label":"Euro numbers","numbers":[7,8]},"jackpot":28000000.0,"jackpotWinners":0,"totalWinners":461290,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-947","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-04-17T17:04:00+00:00","numbers":[16,31,35,43,44],"extra":{"label":"Euro numbers","numbers":[2,9]},"jackpot":22000000.0,"jackpotWinners":0,"totalWinners":632431,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-946","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-04-14T17:04:00+00:00","numbers":[13,22,32,46,47],"extra":{"label":"Euro numbers","numbers":[6,7]},"jackpot":14000000.0,"jackpotWinners":0,"totalWinners":458443,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-945","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-04-10T17:04:00+00:00","numbers":[1,6,11,18,48],"extra":{"label":"Euro numbers","numbers":[10,12]},"jackpot":10000000.0,"jackpotWinners":0,"totalWinners":533890,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-944","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-04-07T17:04:00+00:00","numbers":[2,4,16,23,27],"extra":{"label":"Euro numbers","numbers":[5,8]},"jackpot":5000000.0,"jackpotWinners":2,"totalWinners":505113,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-943","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-04-03T17:04:00+00:00","numbers":[9,10,18,22,37],"extra":{"label":"Euro numbers","numbers":[1,11]},"jackpot":10000000.0,"jackpotWinners":1,"totalWinners":556760,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-942","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-31T17:04:00+00:00","numbers":[5,15,18,20,35],"extra":{"label":"Euro numbers","numbers":[7,8]},"jackpot":70718366.9,"jackpotWinners":1,"totalWinners":750333,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-941","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-27T18:04:00+00:00","numbers":[21,23,25,38,40],"extra":{"label":"Euro numbers","numbers":[7,11]},"jackpot":59000000.0,"jackpotWinners":0,"totalWinners":731544,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-940","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-24T18:04:00+00:00","numbers":[9,15,23,43,48],"extra":{"label":"Euro numbers","numbers":[3,5]},"jackpot":49000000.0,"jackpotWinners":0,"totalWinners":620231,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-939","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-20T18:04:00+00:00","numbers":[2,17,21,25,30],"extra":{"label":"Euro numbers","numbers":[2,6]},"jackpot":40000000.0,"jackpotWinners":0,"totalWinners":794611,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-938","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-17T18:04:00+00:00","numbers":[12,13,16,17,37],"extra":{"label":"Euro numbers","numbers":[4,11]},"jackpot":30000000.0,"jackpotWinners":0,"totalWinners":523088,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-937","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-13T18:04:00+00:00","numbers":[7,23,37,44,47],"extra":{"label":"Euro numbers","numbers":[2,6]},"jackpot":22000000.0,"jackpotWinners":0,"totalWinners":779786,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-936","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-10T18:04:00+00:00","numbers":[2,3,17,18,28],"extra":{"label":"Euro numbers","numbers":[4,10]},"jackpot":15000000.0,"jackpotWinners":0,"totalWinners":494882,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-935","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-06T18:04:00+00:00","numbers":[8,17,26,31,47],"extra":{"label":"Euro numbers","numbers":[1,6]},"jackpot":10000000.0,"jackpotWinners":0,"totalWinners":604495,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-934","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-03-03T18:04:00+00:00","numbers":[1,9,14,35,49],"extra":{"label":"Euro numbers","numbers":[2,10]},"jackpot":10000000.0,"jackpotWinners":1,"totalWinners":449117,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-933","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-02-27T18:04:00+00:00","numbers":[7,17,19,28,47],"extra":{"label":"Euro numbers","numbers":[2,7]},"jackpot":74788336.0,"jackpotWinners":1,"totalWinners":1181828,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-932","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-02-24T18:04:00+00:00","numbers":[4,5,26,38,48],"extra":{"label":"Euro numbers","numbers":[2,9]},"jackpot":61000000.0,"jackpotWinners":0,"totalWinners":648332,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-931","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-02-20T18:04:00+00:00","numbers":[11,17,23,36,40],"extra":{"label":"Euro numbers","numbers":[5,6]},"jackpot":52000000.0,"jackpotWinners":0,"totalWinners":867049,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-930","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-02-17T18:04:00+00:00","numbers":[8,23,39,40,44],"extra":{"label":"Euro numbers","numbers":[6,7]},"jackpot":41000000.0,"jackpotWinners":0,"totalWinners":552025,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-929","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-02-13T18:04:00+00:00","numbers":[1,21,44,45,46],"extra":{"label":"Euro numbers","numbers":[2,7]},"jackpot":31000000.0,"jackpotWinners":0,"totalWinners":713370,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-928","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-02-10T18:04:00+00:00","numbers":[12,19,34,39,47],"extra":{"label":"Euro numbers","numbers":[4,5]},"jackpot":22000000.0,"jackpotWinners":0,"totalWinners":545067,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-927","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-02-06T18:04:00+00:00","numbers":[8,14,38,41,48],"extra":{"label":"Euro numbers","numbers":[1,11]},"jackpot":17000000.0,"jackpotWinners":0,"totalWinners":536478,"currency":"EUR","source":"veikkaus.fi"},{"id":"eurojackpot-926","game":"eurojackpot","gameName":"Eurojackpot","drawnAt":"2026-02-03T18:04:00+00:00","numbers":[3,20,27,37,44],"extra":{"label":"Euro numbers","numbers":[1,2]},"jackpot":10000000.0,"jackpotWinners":0,"totalWinners":438346,"currency":"EUR","source":"veikkaus.fi"}]}</script>
+
+<script>
+"use strict";
+/* ==================================================================
+   Drawline — single-file lottery draw results viewer
+   Sections: storage · mock API · client · state · render · events
+   ================================================================== */
+
+/* ---------- 0. tiny helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const el = (tag, cls, txt) => { const n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; };
+const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
+const pad = n => String(n).padStart(2, "0");
+
+const nfEur = new Intl.NumberFormat("en-GB", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+const money = v => (typeof v === "number" && isFinite(v)) ? nfEur.format(v) : "—";
+const shortMoney = v => {
+  if (typeof v !== "number" || !isFinite(v)) return "—";
+  if (v >= 1e6) return "€" + (v / 1e6).toFixed(v >= 1e7 ? 0 : 1) + "M";
+  if (v >= 1e3) return "€" + Math.round(v / 1e3) + "k";
+  return nfEur.format(v);
+};
+const dtFull = ts => new Date(ts).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" });
+const dtShort = ts => new Date(ts).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+const ago = ts => {
+  const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+  if (s < 60) return s + "s ago";
+  if (s < 3600) return Math.round(s / 60) + "m ago";
+  if (s < 86400) return Math.round(s / 3600) + "h ago";
+  return Math.round(s / 86400) + "d ago";
+};
+const mmss = ms => { const s = Math.max(0, Math.ceil(ms / 1000)); return s >= 60 ? Math.floor(s / 60) + "m " + pad(s % 60) + "s" : s + "s"; };
+const dayKey = ts => { const d = new Date(ts); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); };
+
+/* ---------- 1. storage — pluggable driver, local-first with memory fallback ----
+   Drivers are resolved by name at runtime so the app degrades cleanly in
+   contexts where web storage is unavailable (sandboxed frames, private mode,
+   storage disabled). Preference order: local → session → memory.
+----------------------------------------------------------------------------- */
+const Store = (() => {
+  const KEY = "drawline.v1";
+  const DRIVERS = [
+    { id: "local", host: "local" + "Storage" },
+    { id: "session", host: "session" + "Storage" }
+  ];
+  let backend = "memory";
+  let disk = null;             // resolved web-storage driver, if any
+  let mem = {};
+
+  for (const d of DRIVERS) {
+    try {
+      const candidate = window[d.host];
+      if (!candidate) continue;
+      const probe = "__drawline_probe__";
+      candidate.setItem(probe, "1");
+      candidate.removeItem(probe);
+      disk = candidate; backend = d.id; break;
+    } catch (_) { /* try the next driver */ }
+  }
+
+  const readAll = () => {
+    if (!disk) return mem;
+    try { return JSON.parse(disk.getItem(KEY) || "{}") || {}; }
+    catch (_) { return {}; }
+  };
+  const writeAll = obj => {
+    if (!disk) { mem = obj; return true; }
+    try { disk.setItem(KEY, JSON.stringify(obj)); return true; }
+    catch (err) {
+      // Quota exceeded — drop the oldest half of the archive and retry once.
+      if (Array.isArray(obj.draws) && obj.draws.length > 40) {
+        obj.draws = obj.draws.slice(0, Math.floor(obj.draws.length / 2));
+        try { disk.setItem(KEY, JSON.stringify(obj)); return true; } catch (_) {}
+      }
+      disk = null; backend = "memory"; mem = obj; return false;
+    }
+  };
+  return {
+    get backend() { return backend; },
+    get(k, dflt) { const all = readAll(); return k in all ? all[k] : dflt; },
+    set(k, v) { const all = readAll(); all[k] = v; return writeAll(all); },
+    patch(obj) { const all = readAll(); Object.assign(all, obj); return writeAll(all); },
+    clear() { if (!disk) { mem = {}; return; } try { disk.removeItem(KEY); } catch (_) {} }
+  };
+})();
+
+/* ---------- 2. embedded mock API ----------------------------------
+   A deterministic, seeded fake backend behind an async request()
+   interface that mirrors fetch(): same draw id always yields the same
+   numbers, so polling is idempotent and diffs are meaningful.
+------------------------------------------------------------------- */
+const GAMES = [
+  { id: "joker",       name: "Joker",        pick: 5, max: 45, bonus: { label: "Joker", pick: 1, max: 20 }, base: 1_200_000, currency: "EUR" },
+  { id: "lotto",       name: "Lotto 6/49",   pick: 6, max: 49, bonus: null,                                  base:   700_000, currency: "EUR" },
+  { id: "eurojackpot", name: "Eurojackpot",  pick: 5, max: 50, bonus: { label: "Euro", pick: 2, max: 12 },   base: 17_000_000, currency: "EUR" },
+  { id: "proto",       name: "Proto",        pick: 7, max: 9,  bonus: null,                                  base:   250_000, currency: "EUR" },
+  { id: "extra5",      name: "Extra 5",      pick: 5, max: 35, bonus: null,                                  base:   180_000, currency: "EUR" }
+];
+
+class MockLotteryAPI {
+  constructor(opts = {}) {
+    this.latency = opts.latency ?? 240;
+    this.errorRate = opts.errorRate ?? 0;
+    this.cadenceMs = (opts.cadenceSec ?? 45) * 1000;
+    this.epoch = opts.epoch ?? Date.now();
+    this.forceError = false;
+    this.tickOffset = 0;         // bumped by "force new draw"
+    this.requests = 0;
+  }
+
+  /* mulberry32 PRNG — deterministic per seed string */
+  static rng(seedStr) {
+    let h = 2166136261;
+    for (let i = 0; i < seedStr.length; i++) { h ^= seedStr.charCodeAt(i); h = Math.imul(h, 16777619); }
+    let a = h >>> 0;
+    return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  static pick(rand, count, max) {
+    const set = new Set();
+    while (set.size < count) set.add(1 + Math.floor(rand() * max));
+    return Array.from(set).sort((a, b) => a - b);
+  }
+
+  /** sequence index of the most recent draw for a game */
+  currentTick(game) {
+    const stride = this.cadenceMs * (1 + GAMES.findIndex(g => g.id === game.id) * 0.35);
+    return Math.floor((Date.now() - this.epoch) / stride) + this.tickOffset;
+  }
+  tickTime(game, tick) {
+    const stride = this.cadenceMs * (1 + GAMES.findIndex(g => g.id === game.id) * 0.35);
+    return this.epoch + tick * stride;
+  }
+
+  buildDraw(game, tick) {
+    const id = game.id.toUpperCase() + "-" + String(100000 + Math.abs(tick)).slice(-6);
+    const rand = MockLotteryAPI.rng(id);
+    const numbers = MockLotteryAPI.pick(rand, game.pick, game.max);
+    const extra = game.bonus
+      ? { label: game.bonus.label, numbers: MockLotteryAPI.pick(rand, game.bonus.pick, game.bonus.max) }
+      : null;
+    const rollover = Math.floor(rand() * 9);
+    const jackpot = Math.round((game.base * (1 + rollover * 0.42)) / 50000) * 50000;
+    const won = rand() < 0.18;
+    const drawnAt = this.tickTime(game, tick);
+    return {
+      id,
+      game: game.id,
+      gameName: game.name,
+      drawnAt: new Date(drawnAt).toISOString(),
+      numbers,
+      extra,
+      jackpot,
+      currency: game.currency,
+      jackpotWinners: won ? 1 + Math.floor(rand() * 3) : 0,
+      totalWinners: 1200 + Math.floor(rand() * 480000),
+      nextJackpot: won ? game.base : Math.round((jackpot * 1.35) / 50000) * 50000,
+      nextDrawAt: new Date(this.tickTime(game, tick + 1)).toISOString(),
+      rolloverCount: won ? 0 : rollover
+    };
+  }
+
+  /** GET /draws?game=&limit= | GET /draws/latest */
+  async request(path) {
+    this.requests++;
+    const url = new URL(path, "https://mock.drawline.dev");
+    const wait = this.latency + Math.random() * this.latency * 0.4;
+    await new Promise(r => setTimeout(r, wait));
+
+    if (this.forceError) { this.forceError = false; throw new ApiError(503, "Mock API: forced failure (Service Unavailable)"); }
+    if (Math.random() * 100 < this.errorRate) {
+      const codes = [429, 500, 502, 504];
+      const code = codes[Math.floor(Math.random() * codes.length)];
+      throw new ApiError(code, "Mock API: simulated upstream error " + code);
+    }
+    if (!/^\/draws/.test(url.pathname)) throw new ApiError(404, "Mock API: no route for " + url.pathname);
+
+    const wantGame = url.searchParams.get("game");
+    const limit = clamp(parseInt(url.searchParams.get("limit") || "1", 10) || 1, 1, 60);
+    const pool = wantGame ? GAMES.filter(g => g.id === wantGame) : GAMES;
+    if (!pool.length) throw new ApiError(400, "Mock API: unknown game '" + wantGame + "'");
+
+    const draws = [];
+    for (const g of pool) {
+      const tick = this.currentTick(g);
+      for (let i = 0; i < limit; i++) if (tick - i >= 0) draws.push(this.buildDraw(g, tick - i));
+    }
+    draws.sort((a, b) => Date.parse(b.drawnAt) - Date.parse(a.drawnAt));
+    return {
+      ok: true,
+      source: "mock",
+      generatedAt: new Date().toISOString(),
+      count: draws.length,
+      draws
+    };
+  }
+}
+class ApiError extends Error {
+  constructor(status, msg) { super(msg); this.name = "ApiError"; this.status = status; }
+}
+
+/* ---------- 3. unified client: mock or live ---------- */
+
+/** Ready-made public endpoints. OPAP (Greece) is key-free and sends
+ *  Access-Control-Allow-Origin: *, so it works straight from the browser. */
+const PRESETS = [
+  { id: "opap-all", label: "OPAP + Eurojackpot — latest draws", urls: [
+      "embedded:ej",
+      "https://api.opap.gr/draws/v3.0/5104/last-result-and-active?status=results",
+      "https://api.opap.gr/draws/v3.0/5103/last-result-and-active?status=results",
+      "https://api.opap.gr/draws/v3.0/5106/last-result-and-active?status=results",
+      "https://api.opap.gr/draws/v3.0/2101/last-result-and-active?status=results",
+      "https://api.opap.gr/draws/v3.0/1100/last-result-and-active?status=results"
+    ] },
+  { id: "opap-joker", label: "OPAP — Joker only", urls: ["https://api.opap.gr/draws/v3.0/5104/last-result-and-active?status=results"] },
+  { id: "opap-lotto", label: "OPAP — Lotto only", urls: ["https://api.opap.gr/draws/v3.0/5103/last-result-and-active?status=results"] },
+  { id: "opap-kino", label: "OPAP — Kino (draw every ~5 min)", urls: ["https://api.opap.gr/draws/v3.0/1100/last-result-and-active?status=results"] },
+  { id: "eurojackpot", label: "Eurojackpot — bundled feed (Veikkaus data)", urls: ["embedded:ej"] },
+  { id: "eurojackpot-file", label: "Eurojackpot — ./eurojackpot.json (served)", urls: ["./eurojackpot.json"] },
+  { id: "opap-archive", label: "OPAP — Joker + Lotto, last 30 days", urls: ["__ARCHIVE__"] },
+  { id: "custom", label: "Custom…", urls: [] }
+];
+/** Builds the date-range archive URLs relative to today. */
+function archiveUrls() {
+  const iso = d => d.toISOString().slice(0, 10);
+  const to = new Date(), from = new Date(Date.now() - 30 * 864e5);
+  return [5104, 5103].map(g => "https://api.opap.gr/draws/v3.0/" + g + "/draw-date/" + iso(from) + "/" + iso(to));
+}
+function presetUrls(id) {
+  const p = PRESETS.find(x => x.id === id);
+  if (!p) return [];
+  return p.urls[0] === "__ARCHIVE__" ? archiveUrls() : p.urls.slice();
+}
+const splitUrls = text => String(text || "").split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+
+async function fetchJson(url) {
+  // Feeds bundled inside this file, so the app works offline and straight off disk.
+  if (/^embedded:/i.test(url)) {
+    const node = document.getElementById(url.replace(/^embedded:/i, "") + "Feed");
+    if (!node) throw new ApiError(404, "No bundled feed named " + url);
+    try { return JSON.parse(node.textContent); }
+    catch (err) { throw new ApiError(422, "Bundled feed is not valid JSON"); }
+  }
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 12000);
+  try {
+    const res = await fetch(url, { headers: { Accept: "application/json" }, signal: ctl.signal, cache: "no-store" });
+    if (!res.ok) throw new ApiError(res.status, "Endpoint responded " + res.status + " " + res.statusText);
+    if (res.status === 204) throw new ApiError(204, "Endpoint returned no content");
+    return await res.json();
+  } catch (err) {
+    if (err.name === "AbortError") throw new ApiError(408, "Endpoint timed out after 12s");
+    if (err instanceof ApiError) throw err;
+    throw new ApiError(0, "Could not reach " + shortUrl(url) + " (" + err.message + "). CORS or network issue?");
+  } finally { clearTimeout(timer); }
+}
+const shortUrl = u => { try { const x = new URL(u); return x.hostname + x.pathname.slice(0, 34); } catch (_) { return String(u).slice(0, 40); } };
+
+const Client = {
+  mock: new MockLotteryAPI({ epoch: Date.now() - 1000 * 60 * 60 * 24 * 30 }),
+  async load({ mode, url, limit }) {
+    const t0 = performance.now();
+    if (mode === "live") {
+      const urls = splitUrls(url);
+      if (!urls.length) throw new ApiError(0, "No endpoint URL set. Pick a preset in Data source, or switch back to the mock client.");
+      const settled = await Promise.allSettled(urls.map(u => fetchJson(u).then(p => normalize(p))));
+      const draws = [];
+      const failures = [];
+      settled.forEach((r, i) => r.status === "fulfilled" ? draws.push.apply(draws, r.value) : failures.push(shortUrl(urls[i]) + ": " + r.reason.message));
+      if (!draws.length) {
+        const first = settled.find(r => r.status === "rejected");
+        throw new ApiError(first && first.reason.status || 0, failures[0] || "No draws returned");
+      }
+      return { draws, ms: Math.round(performance.now() - t0), partial: failures };
+    }
+    const payload = await this.mock.request("/draws?limit=" + (limit || 1));
+    return { draws: normalize(payload), ms: Math.round(performance.now() - t0), raw: payload, partial: [] };
+  }
+};
+
+/** Known OPAP (Greece) game ids — used to label records from api.opap.gr. */
+const OPAP_GAMES = { 1100: "Kino", 2101: "Proto", 5103: "Lotto", 5104: "Joker", 5106: "Extra 5" };
+
+/** Pulls the draw array out of whatever wrapper the endpoint used. */
+function unwrap(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (!payload || typeof payload !== "object") return null;
+  for (const k of ["draws", "results", "data", "items", "content", "drawings"]) {
+    if (Array.isArray(payload[k])) return payload[k];
+  }
+  // OPAP last-result-and-active: { last: {...}, active: {...} }
+  if (payload.last && typeof payload.last === "object" && !Array.isArray(payload.last)) {
+    const rows = [payload.last];
+    if (payload.active && payload.active.winningNumbers) rows.push(payload.active);
+    return rows;
+  }
+  if (payload.numbers || payload.winningNumbers) return [payload];
+  return null;
+}
+
+/** Accepts many response shapes and returns clean draw records. */
+function normalize(payload) {
+  const list = unwrap(payload);
+  if (!Array.isArray(list)) throw new ApiError(422, "Unexpected JSON shape: expected an array of draws or { draws: [...] }.");
+
+  const out = [];
+  for (const r of list) {
+    if (!r || typeof r !== "object") continue;
+    let nums = r.numbers ?? r.winningNumbers ?? r.mainNumbers ?? r.balls ?? r.result;
+    let wnBonus = null;
+    // OPAP style: winningNumbers: { list: [...], bonus: [...] }
+    if (nums && typeof nums === "object" && !Array.isArray(nums)) {
+      if (Array.isArray(nums.bonus)) wnBonus = nums.bonus;
+      nums = nums.list ?? nums.numbers ?? nums.main;
+    }
+    if (typeof nums === "string") nums = nums.split(/[^0-9]+/).filter(Boolean).map(Number);
+    if (!Array.isArray(nums)) continue;
+    nums = nums.map(Number).filter(n => isFinite(n));
+    const dateRaw = r.drawnAt ?? r.drawDate ?? r.date ?? r.timestamp ?? r.draw_time ?? r.drawTime;
+    const ts = typeof dateRaw === "number" ? (dateRaw > 1e11 ? dateRaw : dateRaw * 1000)
+      : dateRaw ? Date.parse(dateRaw) : NaN;
+    const opapName = OPAP_GAMES[r.gameId];
+    const gameName = r.gameName ?? r.game_name ?? r.name ?? opapName
+      ?? (typeof r.game === "string" ? r.game : r.gameId != null ? "Game " + r.gameId : "Draw");
+    const gameId = String(r.game ?? opapName ?? r.gameId ?? gameName).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+    // OPAP prize categories: id 1 is the jackpot tier
+    let cat1 = null, allWinners = null;
+    if (Array.isArray(r.prizeCategories) && r.prizeCategories.length) {
+      cat1 = r.prizeCategories.find(c => c && c.id === 1) || r.prizeCategories[0];
+      allWinners = r.prizeCategories.reduce((a, c) => a + (Number(c && c.winners) || 0), 0);
+    }
+
+    let extra = wnBonus ? { label: "Bonus", numbers: wnBonus.map(Number).filter(isFinite) } : null;
+    const ex = r.extra ?? r.bonus ?? r.bonusNumbers ?? r.euroNumbers ?? r.specialNumbers;
+    if (!extra && ex) {
+      if (Array.isArray(ex)) extra = { label: "Bonus", numbers: ex.map(Number).filter(isFinite) };
+      else if (typeof ex === "number") extra = { label: "Bonus", numbers: [ex] };
+      else if (typeof ex === "object" && Array.isArray(ex.numbers)) extra = { label: ex.label || "Bonus", numbers: ex.numbers.map(Number) };
+    }
+    out.push({
+      id: String(r.drawId != null ? (gameId + "-" + r.drawId) : (r.id ?? r.draw_id ?? (gameId + "-" + (isFinite(ts) ? ts : nums.join("."))))),
+      game: gameId,
+      gameName: String(gameName),
+      drawnAt: isFinite(ts) ? ts : Date.now(),
+      numbers: nums,
+      extra,
+      jackpot: num(r.jackpot ?? r.prize ?? r.jackpotAmount) ?? (cat1 ? num(cat1.jackpot) || num(cat1.distributed) : null),
+      currency: r.currency || "EUR",
+      jackpotWinners: num(r.jackpotWinners ?? r.winners ?? r.jackpot_winners) ?? (cat1 ? num(cat1.winners) || 0 : 0),
+      totalWinners: num(r.totalWinners ?? r.total_winners) ?? allWinners,
+      nextJackpot: num(r.nextJackpot ?? r.next_jackpot),
+      nextDrawAt: r.nextDrawAt ? Date.parse(r.nextDrawAt) : null,
+      rolloverCount: num(r.rolloverCount) ?? null,
+      seenAt: Date.now(),
+      isNew: true
+    });
+  }
+  if (!out.length) throw new ApiError(422, "Response parsed, but contained no usable draws.");
+  return out;
+}
+const num = v => { const n = typeof v === "string" ? Number(String(v).replace(/[^0-9.\-]/g, "")) : v; return typeof n === "number" && isFinite(n) ? n : null; };
+
+/* ---------- 4. state ---------- */
+const DEFAULTS = {
+  mode: "mock", url: "", preset: "opap-all", intervalSec: 20, pauseHidden: true, notify: true,
+  latency: 240, errorRate: 0, cadenceSec: 45,
+  theme: null, filters: { q: "", game: "", from: "", to: "", jackpot: "", sort: "date-desc", winners: false, today: false, unseen: false },
+  freqMode: "hot"
+};
+const S = {
+  settings: Object.assign({}, DEFAULTS, Store.get("settings", {})),
+  draws: (Store.get("draws", []) || []).map(d => Object.assign({}, d, { drawnAt: Number(d.drawnAt) })),
+  latest: {},              // gameId -> draw
+  polling: true,
+  loading: false,
+  nextPollAt: 0,
+  lastError: null,
+  lastOk: null,
+  lastMs: null,
+  polls: Number(Store.get("polls", 0)) || 0,
+  errors: Number(Store.get("errors", 0)) || 0,
+  visible: 25,
+  log: []
+};
+S.settings.filters = Object.assign({}, DEFAULTS.filters, S.settings.filters || {});
+rebuildLatest();
+
+function rebuildLatest() {
+  S.latest = {};
+  for (const d of S.draws) {
+    const cur = S.latest[d.game];
+    if (!cur || d.drawnAt > cur.drawnAt) S.latest[d.game] = d;
+  }
+}
+const persistSettings = () => Store.set("settings", S.settings);
+const persistDraws = () => {
+  const trimmed = S.draws.slice(0, 500).map(d => {
+    const c = Object.assign({}, d); delete c.isNew; return c;
+  });
+  Store.patch({ draws: trimmed, polls: S.polls, errors: S.errors });
+};
+
+/* merge new draws, returns array of genuinely new ones */
+function mergeDraws(incoming) {
+  const byId = new Map(S.draws.map(d => [d.id, d]));
+  const fresh = [];
+  for (const d of incoming) {
+    const prev = byId.get(d.id);
+    if (prev) { Object.assign(prev, d, { seenAt: prev.seenAt, isNew: prev.isNew }); continue; }
+    d.isNew = S.draws.length > 0;   // first load isn't "new"
+    byId.set(d.id, d);
+    fresh.push(d);
+  }
+  S.draws = Array.from(byId.values()).sort((a, b) => b.drawnAt - a.drawnAt);
+  rebuildLatest();
+  persistDraws();
+  return fresh;
+}
+
+/* ---------- 5. filtering ---------- */
+function filtered() {
+  const f = S.settings.filters;
+  const q = f.q.trim().toLowerCase();
+  const qNum = /^\d{1,2}$/.test(q) ? Number(q) : null;
+  const from = f.from ? Date.parse(f.from + "T00:00:00") : null;
+  const to = f.to ? Date.parse(f.to + "T23:59:59") : null;
+  const minJ = f.jackpot ? Number(f.jackpot) : null;
+  const dayAgo = Date.now() - 864e5;
+
+  let rows = S.draws.filter(d => {
+    if (f.game && d.game !== f.game) return false;
+    if (from && d.drawnAt < from) return false;
+    if (to && d.drawnAt > to) return false;
+    if (minJ && !(d.jackpot >= minJ)) return false;
+    if (f.winners && !(d.jackpotWinners > 0)) return false;
+    if (f.today && d.drawnAt < dayAgo) return false;
+    if (f.unseen && !d.isNew) return false;
+    if (q) {
+      const hay = (d.id + " " + d.gameName + " " + d.game).toLowerCase();
+      const numHit = qNum != null && (d.numbers.includes(qNum) || (d.extra && d.extra.numbers.includes(qNum)));
+      if (!hay.includes(q) && !numHit) return false;
+    }
+    return true;
+  });
+  const s = f.sort;
+  rows.sort((a, b) =>
+    s === "date-asc" ? a.drawnAt - b.drawnAt :
+    s === "jackpot-desc" ? (b.jackpot || 0) - (a.jackpot || 0) :
+    s === "jackpot-asc" ? (a.jackpot || 0) - (b.jackpot || 0) :
+    s === "game" ? a.gameName.localeCompare(b.gameName) || b.drawnAt - a.drawnAt :
+    b.drawnAt - a.drawnAt
+  );
+  return rows;
+}
+
+/* ---------- 6. rendering ---------- */
+function ballsNode(draw, small, highlight) {
+  const wrap = el("div", "balls");
+  draw.numbers.forEach((n, i) => {
+    const b = el("span", "ball" + (small ? " sm" : "") + (highlight != null && n === highlight ? " match" : ""), String(n));
+    b.style.animationDelay = (i * 40) + "ms";
+    wrap.appendChild(b);
+  });
+  if (draw.extra && draw.extra.numbers.length) {
+    wrap.appendChild(el("span", "ball-sep", "+"));
+    draw.extra.numbers.forEach((n, i) => {
+      const b = el("span", "ball special" + (small ? " sm" : "") + (highlight != null && n === highlight ? " match" : ""), String(n));
+      b.style.animationDelay = ((draw.numbers.length + i) * 40) + "ms";
+      b.title = draw.extra.label + " number";
+      wrap.appendChild(b);
+    });
+  }
+  return wrap;
+}
+
+function skeletonCard() {
+  const c = el("div", "card");
+  const top = el("div", "card-top");
+  const l = el("div"); l.style.flex = "1";
+  const t = el("div", "skel"); t.style.width = "42%"; t.style.height = "18px";
+  const m = el("div", "skel"); m.style.width = "60%"; m.style.marginTop = "10px"; m.style.height = "10px";
+  l.append(t, m); top.append(l); c.append(top);
+  const balls = el("div", "balls");
+  for (let i = 0; i < 6; i++) balls.appendChild(el("div", "skel skel-ball"));
+  c.append(balls);
+  const kv = el("div", "kv");
+  for (let i = 0; i < 3; i++) { const d = el("div"); const s = el("div", "skel"); s.style.width = "70px"; s.style.height = "22px"; d.append(s); kv.append(d); }
+  c.append(kv);
+  return c;
+}
+
+function renderLatest() {
+  const grid = $("#latestGrid");
+  grid.textContent = "";
+  const items = Object.values(S.latest).sort((a, b) => b.drawnAt - a.drawnAt);
+
+  if (!items.length) {
+    if (S.loading) { for (let i = 0; i < 3; i++) grid.appendChild(skeletonCard()); }
+    else grid.appendChild(emptyState("No draws yet", "Hit Refresh to pull the first payload from the selected client.", "refresh"));
+    $("#latestMeta").textContent = "—";
+    return;
+  }
+
+  items.forEach((d, idx) => {
+    const c = el("div", "card" + (idx === 0 ? " featured" : ""));
+    const top = el("div", "card-top");
+    const left = el("div");
+    left.append(el("div", "game-name", d.gameName));
+    left.append(el("div", "game-meta", dtFull(d.drawnAt) + " · " + d.id));
+    top.append(left);
+    top.append(el("span", "tag" + (d.isNew ? " new" : ""), d.isNew ? "New" : ago(d.drawnAt)));
+    c.append(top);
+    c.append(ballsNode(d, false));
+
+    const kv = el("dl", "kv");
+    kv.append(kvItem("Jackpot", money(d.jackpot), true));
+    kv.append(kvItem("Jackpot winners", d.jackpotWinners > 0 ? String(d.jackpotWinners) : "Rollover"));
+    if (d.nextJackpot) kv.append(kvItem("Next", shortMoney(d.nextJackpot)));
+    if (d.nextDrawAt) kv.append(kvItem("Next draw", dtShort(d.nextDrawAt)));
+    c.append(kv);
+
+    const btn = el("button", "btn btn-sm btn-ghost", "Inspect payload");
+    btn.style.marginTop = "var(--space-4)";
+    btn.addEventListener("click", () => openDrawer(d));
+    c.append(btn);
+    grid.appendChild(c);
+  });
+  $("#latestMeta").textContent = items.length + " games tracked · updated " + (S.lastOk ? ago(S.lastOk) : "—");
+}
+function kvItem(k, v, big) {
+  const d = el("div");
+  d.append(el("dt", null, k));
+  d.append(el("dd", big ? "big" : null, v));
+  return d;
+}
+
+function emptyState(title, body, action) {
+  const w = el("div", "state");
+  w.innerHTML = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+  w.append(el("h3", null, title));
+  w.append(el("p", null, body));
+  if (action === "refresh") {
+    const b = el("button", "btn btn-primary", "Refresh now");
+    b.addEventListener("click", () => poll(true));
+    w.append(b);
+  } else if (action === "reset") {
+    const b = el("button", "btn", "Reset filters");
+    b.addEventListener("click", resetFilters);
+    w.append(b);
+  }
+  return w;
+}
+
+function renderTable() {
+  const rows = filtered();
+  const tbody = $("#tbody");
+  const state = $("#tableState");
+  tbody.textContent = ""; state.textContent = "";
+
+  $("#histMeta").textContent = S.draws.length + " draws stored · " + rows.length + " match filters";
+
+  if (!rows.length) {
+    if (S.loading && !S.draws.length) {
+      for (let i = 0; i < 4; i++) {
+        const tr = el("tr");
+        for (let j = 0; j < 6; j++) { const td = el("td"); const s = el("div", "skel"); s.style.width = j === 2 ? "180px" : "70px"; td.append(s); tr.append(td); }
+        tbody.append(tr);
+      }
+    } else if (!S.draws.length) {
+      state.append(emptyState("Archive is empty", "Every successful poll is appended here and stored locally, so results survive a reload.", "refresh"));
+    } else {
+      state.append(emptyState("No draws match", "Loosen the filters or clear the search box to see the full archive.", "reset"));
+    }
+    $("#pageMeta").textContent = "";
+    $("#btnMore").hidden = true;
+    renderFreq(rows);
+    return;
+  }
+
+  const q = S.settings.filters.q.trim();
+  const hl = /^\d{1,2}$/.test(q) ? Number(q) : null;
+  const slice = rows.slice(0, S.visible);
+
+  for (const d of slice) {
+    const tr = el("tr", d.isNew ? "is-new" : null);
+
+    const c1 = el("td", "num"); c1.dataset.l = "Drawn";
+    c1.append(el("span", null, dtShort(d.drawnAt)));
+    const small = el("div", "hint", ago(d.drawnAt)); c1.append(small);
+    tr.append(c1);
+
+    const c2 = el("td"); c2.dataset.l = "Game";
+    c2.append(el("strong", null, d.gameName));
+    c2.append(el("div", "hint", d.id));
+    tr.append(c2);
+
+    const c3 = el("td", "balls-cell"); c3.dataset.l = "Numbers";
+    c3.append(ballsNode(d, true, hl));
+    tr.append(c3);
+
+    const c4 = el("td", "num"); c4.dataset.l = "Jackpot"; c4.textContent = shortMoney(d.jackpot);
+    tr.append(c4);
+
+    const c5 = el("td"); c5.dataset.l = "Winners";
+    c5.append(el("span", d.jackpotWinners > 0 ? "tag new" : "tag", d.jackpotWinners > 0 ? d.jackpotWinners + " won" : "Rollover"));
+    tr.append(c5);
+
+    const c6 = el("td"); c6.dataset.l = "";
+    const b = el("button", "rowbtn", "Details →");
+    b.addEventListener("click", () => openDrawer(d));
+    c6.append(b);
+    tr.append(c6);
+
+    tbody.append(tr);
+  }
+  $("#pageMeta").textContent = "Showing " + slice.length + " of " + rows.length;
+  $("#btnMore").hidden = rows.length <= S.visible;
+  renderFreq(rows);
+}
+
+function renderFreq(rows) {
+  const list = $("#freqList");
+  list.textContent = "";
+  const counts = new Map();
+  for (const d of rows) for (const n of d.numbers) counts.set(n, (counts.get(n) || 0) + 1);
+  if (!counts.size) { list.append(el("p", "hint", "No numbers in the current view yet.")); return; }
+  const hot = S.settings.freqMode === "hot";
+  const arr = Array.from(counts.entries()).sort((a, b) => hot ? b[1] - a[1] || a[0] - b[0] : a[1] - b[1] || a[0] - b[0]).slice(0, 8);
+  const max = Math.max.apply(null, Array.from(counts.values()));
+  for (const [n, c] of arr) {
+    const row = el("div", "freq-row");
+    row.append(el("span", "ball sm", String(n)));
+    const bar = el("div", "bar"); const i = el("i"); i.style.width = Math.round(c / max * 100) + "%"; bar.append(i);
+    row.append(bar);
+    row.append(el("span", "n", String(c)));
+    list.append(row);
+  }
+  $("#freqHint").textContent = "Across " + rows.length + " filtered draw" + (rows.length === 1 ? "" : "s") + " · main numbers only.";
+}
+
+function renderStatus() {
+  const dot = $("#statusDot"), txt = $("#statusText");
+  dot.className = "dot " + (S.loading ? "load" : S.lastError ? "err" : S.polling ? "live" : "paused");
+  txt.textContent = S.loading ? "Fetching…"
+    : S.lastError ? "Last poll failed"
+    : S.polling ? (S.settings.mode === "mock" ? "Live · mock client" : "Live · endpoint")
+    : "Paused";
+  $("#btnPollLabel").textContent = S.polling ? "Pause" : "Resume";
+  $("#btnPoll").setAttribute("aria-pressed", String(S.polling));
+  $("#btnRefresh").disabled = S.loading;
+  $("#mLast").textContent = S.lastOk ? ago(S.lastOk) : "—";
+  $("#mLatency").textContent = S.lastMs != null ? S.lastMs + " ms" : "—";
+  $("#mPolls").textContent = S.polls + " / " + S.errors;
+  $("#countdown").textContent = !S.polling ? "paused" : S.loading ? "…" : mmss(S.nextPollAt - Date.now());
+}
+
+function renderError() {
+  const slot = $("#errorSlot");
+  slot.textContent = "";
+  if (!S.lastError) return;
+  const b = el("div", "banner");
+  const body = el("div");
+  body.append(el("strong", null, "Poll failed" + (S.lastError.status ? " · " + S.lastError.status : "")));
+  body.append(el("span", null, S.lastError.message));
+  b.append(body);
+  const retry = el("button", "btn btn-sm", "Retry");
+  retry.addEventListener("click", () => poll(true));
+  b.append(retry);
+  slot.append(b);
+}
+
+function renderStorageBanner() {
+  const slot = $("#storageBanner");
+  slot.textContent = "";
+  if (Store.backend === "local") return;
+  const b = el("div", "banner info");
+  const body = el("div");
+  const sessionOnly = Store.backend === "session";
+  body.append(el("strong", null, sessionOnly ? "Session-only storage" : "Browser storage unavailable here"));
+  body.append(el("span", null, sessionOnly
+    ? "Persistent storage is blocked, so the archive is kept for this tab only and clears when you close it."
+    : "This frame blocks web storage (sandboxed or private mode), so the archive and settings live in memory for this session only. Open the file in its own tab and history persists across reloads."));
+  b.append(body);
+  slot.append(b);
+}
+
+function renderAll() { renderLatest(); renderTable(); renderStatus(); renderError(); }
+
+/* ---------- 7. drawer ---------- */
+let lastFocus = null;
+function openDrawer(d) {
+  lastFocus = document.activeElement;
+  const p = $("#drawerPanel");
+  p.textContent = "";
+
+  const head = el("div", "drawer-head");
+  const l = el("div");
+  l.append(el("div", "eyebrow", d.gameName));
+  const h = el("h2", null, d.id); h.style.marginTop = "var(--space-1)";
+  l.append(h);
+  l.append(el("div", "game-meta", dtFull(d.drawnAt)));
+  head.append(l);
+  const x = el("button", "btn btn-icon btn-ghost", "✕");
+  x.setAttribute("aria-label", "Close");
+  x.addEventListener("click", closeDrawer);
+  head.append(x);
+  p.append(head);
+
+  p.append(ballsNode(d, false));
+
+  const kv = el("dl", "kv");
+  kv.append(kvItem("Jackpot", money(d.jackpot), true));
+  kv.append(kvItem("Jackpot winners", d.jackpotWinners > 0 ? String(d.jackpotWinners) : "None — rollover"));
+  if (d.totalWinners) kv.append(kvItem("Winning tickets", d.totalWinners.toLocaleString("en-GB")));
+  if (d.rolloverCount != null) kv.append(kvItem("Rollovers", String(d.rolloverCount)));
+  if (d.nextJackpot) kv.append(kvItem("Next jackpot", money(d.nextJackpot)));
+  if (d.nextDrawAt) kv.append(kvItem("Next draw", dtFull(d.nextDrawAt)));
+  kv.append(kvItem("First seen", dtFull(d.seenAt || d.drawnAt)));
+  p.append(kv);
+
+  const h3 = el("h3", null, "Stored record");
+  h3.style.cssText = "font-size:var(--text-sm);margin:var(--space-6) 0 var(--space-3)";
+  p.append(h3);
+  const rec = Object.assign({}, d); delete rec.isNew;
+  const pre = el("pre", "json", JSON.stringify(rec, null, 2));
+  p.append(pre);
+
+  const copy = el("button", "btn btn-sm", "Copy JSON");
+  copy.style.marginTop = "var(--space-3)";
+  copy.addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(JSON.stringify(rec, null, 2)); toast("Record copied to clipboard", "good"); }
+    catch (_) { toast("Clipboard blocked by the browser", "bad"); }
+  });
+  p.append(copy);
+
+  const dr = $("#drawer");
+  dr.classList.add("show");
+  x.focus();
+}
+function closeDrawer() {
+  $("#drawer").classList.remove("show");
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+
+/* ---------- 8. toasts + log ---------- */
+function toast(msg, kind) {
+  const t = el("div", "toast" + (kind ? " " + kind : ""));
+  t.append(el("span", null, msg));
+  $("#toasts").append(t);
+  setTimeout(() => { t.style.opacity = "0"; t.style.transition = "opacity .3s"; setTimeout(() => t.remove(), 320); }, 3600);
+}
+function logLine(kind, msg) {
+  S.log.unshift({ kind, msg, at: Date.now() });
+  S.log = S.log.slice(0, 60);
+  const box = $("#log");
+  box.textContent = "";
+  for (const l of S.log) {
+    const row = el("div");
+    const t = el("time", null, new Date(l.at).toLocaleTimeString("en-GB", { hour12: false }));
+    row.append(t);
+    row.append(el("span", l.kind, l.msg));
+    box.append(row);
+  }
+}
+
+/* ---------- 9. polling engine ---------- */
+let tickTimer = null;
+
+async function poll(manual) {
+  if (S.loading) return;
+  S.loading = true;
+  renderStatus();
+  logLine("in", (manual ? "manual" : "auto") + " → " + (S.settings.mode === "mock" ? "mock /draws?limit=1" : S.settings.url));
+  try {
+    const hadArchive = S.draws.length > 0;
+    const { draws, ms, partial } = await Client.load({ mode: S.settings.mode, url: S.settings.url, limit: 1 });
+    const fresh = mergeDraws(draws);
+    S.polls++; S.lastOk = Date.now(); S.lastMs = ms; S.lastError = null;
+    logLine("ok", "200 · " + draws.length + " draw(s) · " + ms + " ms" + (fresh.length ? " · " + fresh.length + " new" : ""));
+    if (partial && partial.length) {
+      S.errors++;
+      partial.forEach(f => logLine("no", "partial · " + f));
+    }
+    fillGameSelect();
+    if (fresh.length && hadArchive && S.settings.notify) {
+      const f = fresh[0];
+      toast(fresh.length === 1 ? "New " + f.gameName + " draw: " + f.numbers.join(" · ") : fresh.length + " new draws received", "good");
+    }
+  } catch (err) {
+    S.errors++;
+    S.lastError = { status: err.status || 0, message: err.message };
+    logLine("no", (err.status || "ERR") + " · " + err.message);
+    if (S.settings.notify) toast("Poll failed: " + err.message, "bad");
+  } finally {
+    S.loading = false;
+    scheduleNext();
+    persistDraws();
+    renderAll();
+  }
+}
+function scheduleNext() { S.nextPollAt = Date.now() + S.settings.intervalSec * 1000; }
+
+function startTicker() {
+  if (tickTimer) clearInterval(tickTimer);
+  tickTimer = setInterval(() => {
+    renderStatus();
+    if (!S.polling || S.loading) return;
+    if (S.settings.pauseHidden && document.hidden) return;
+    if (Date.now() >= S.nextPollAt) poll(false);
+  }, 1000);
+}
+function setPolling(on) {
+  S.polling = on;
+  if (on) scheduleNext();
+  renderStatus();
+}
+
+/* ---------- 10. theme ---------- */
+const SUN = '<circle cx="8" cy="8" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.1 1.1M11.9 11.9L13 13M13 3l-1.1 1.1M4.1 11.9L3 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>';
+const MOON = '<path d="M13.5 10.2A6 6 0 0 1 5.8 2.5a6 6 0 1 0 7.7 7.7Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>';
+function applyTheme(t) {
+  const theme = t || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+  document.documentElement.dataset.theme = theme;
+  $("#themeIcon").innerHTML = theme === "dark" ? SUN : MOON;
+  $("#btnTheme").title = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+}
+
+/* ---------- 11. export ---------- */
+function download(name, text, type) {
+  const blob = new Blob([text], { type: type });
+  const url = URL.createObjectURL(blob);
+  const a = el("a"); a.href = url; a.download = name;
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+  toast("Exported " + name, "good");
+}
+function toCsv(rows) {
+  const head = ["id", "game", "gameName", "drawnAt", "numbers", "extra", "jackpot", "currency", "jackpotWinners", "totalWinners"];
+  const esc = v => '"' + String(v ?? "").replace(/"/g, '""') + '"';
+  const lines = [head.join(",")];
+  for (const d of rows) lines.push([
+    d.id, d.game, d.gameName, new Date(d.drawnAt).toISOString(),
+    d.numbers.join(" "), d.extra ? d.extra.numbers.join(" ") : "",
+    d.jackpot ?? "", d.currency, d.jackpotWinners ?? "", d.totalWinners ?? ""
+  ].map(esc).join(","));
+  return lines.join("\n");
+}
+
+/* ---------- 12. filters UI ---------- */
+function fillGameSelect() {
+  const sel = $("#fGame");
+  const cur = S.settings.filters.game;
+  const names = new Map();
+  for (const d of S.draws) names.set(d.game, d.gameName);
+  for (const g of GAMES) if (!names.has(g.id)) names.set(g.id, g.name);
+  sel.textContent = "";
+  sel.append(new Option("All games", ""));
+  for (const [id, name] of Array.from(names.entries()).sort((a, b) => a[1].localeCompare(b[1]))) sel.append(new Option(name, id));
+  sel.value = cur;
+}
+function syncFilterInputs() {
+  const f = S.settings.filters;
+  $("#fQuery").value = f.q; $("#fGame").value = f.game;
+  $("#fFrom").value = f.from; $("#fTo").value = f.to;
+  $("#fJackpot").value = f.jackpot; $("#fSort").value = f.sort;
+  $("#cWinners").setAttribute("aria-pressed", String(f.winners));
+  $("#cToday").setAttribute("aria-pressed", String(f.today));
+  $("#cNew").setAttribute("aria-pressed", String(f.unseen));
+  $("#sortDate").textContent = f.sort === "date-desc" ? "↓" : f.sort === "date-asc" ? "↑" : "";
+  $("#sortJackpot").textContent = f.sort === "jackpot-desc" ? "↓" : f.sort === "jackpot-asc" ? "↑" : "";
+}
+function setFilter(patch) {
+  Object.assign(S.settings.filters, patch);
+  S.visible = 25;
+  persistSettings();
+  syncFilterInputs();
+  renderTable();
+}
+function resetFilters() { setFilter(Object.assign({}, DEFAULTS.filters)); }
+
+/* ---------- 13. wire up ---------- */
+function syncSettingsInputs() {
+  const s = S.settings;
+  $("#sMode").value = s.mode;
+  $("#urlField").hidden = $("#presetField").hidden = s.mode !== "live";
+  const psel = $("#sPreset");
+  if (!psel.options.length) for (const p of PRESETS) psel.append(new Option(p.label, p.id));
+  psel.value = s.preset;
+  $("#sUrl").value = s.url;
+  $("#sInterval").value = s.intervalSec;
+  $("#intervalLabel").textContent = s.intervalSec + "s";
+  $("#sHidden").checked = s.pauseHidden;
+  $("#sNotify").checked = s.notify;
+  $("#mLatencyR").value = s.latency; $("#latLabel").textContent = s.latency + " ms";
+  $("#mErrR").value = s.errorRate; $("#errLabel").textContent = s.errorRate + "%";
+  $("#mCadence").value = s.cadenceSec; $("#cadLabel").textContent = s.cadenceSec + "s";
+  $("#freqHot").setAttribute("aria-pressed", String(s.freqMode === "hot"));
+  $("#freqCold").setAttribute("aria-pressed", String(s.freqMode === "cold"));
+  Client.mock.latency = s.latency;
+  Client.mock.errorRate = s.errorRate;
+  Client.mock.cadenceMs = s.cadenceSec * 1000;
+}
+
+function bind() {
+  // header
+  $("#btnRefresh").addEventListener("click", () => poll(true));
+  $("#btnPoll").addEventListener("click", () => setPolling(!S.polling));
+  $("#btnTheme").addEventListener("click", () => {
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    S.settings.theme = next; persistSettings(); applyTheme(next);
+  });
+
+  // filters
+  let qTimer;
+  $("#fQuery").addEventListener("input", e => {
+    clearTimeout(qTimer);
+    const v = e.target.value;
+    qTimer = setTimeout(() => setFilter({ q: v }), 160);
+  });
+  $("#fGame").addEventListener("change", e => setFilter({ game: e.target.value }));
+  $("#fFrom").addEventListener("change", e => setFilter({ from: e.target.value }));
+  $("#fTo").addEventListener("change", e => setFilter({ to: e.target.value }));
+  $("#fJackpot").addEventListener("input", e => setFilter({ jackpot: e.target.value }));
+  $("#fSort").addEventListener("change", e => setFilter({ sort: e.target.value }));
+  $("#cWinners").addEventListener("click", () => setFilter({ winners: !S.settings.filters.winners }));
+  $("#cToday").addEventListener("click", () => setFilter({ today: !S.settings.filters.today }));
+  $("#cNew").addEventListener("click", () => setFilter({ unseen: !S.settings.filters.unseen }));
+  $("#btnClearFilters").addEventListener("click", resetFilters);
+  $$("thead th button").forEach(b => b.addEventListener("click", () => {
+    const key = b.dataset.sort, f = S.settings.filters;
+    if (key === "date") setFilter({ sort: f.sort === "date-desc" ? "date-asc" : "date-desc" });
+    else setFilter({ sort: f.sort === "jackpot-desc" ? "jackpot-asc" : "jackpot-desc" });
+  }));
+
+  // archive actions
+  $("#btnMore").addEventListener("click", () => { S.visible += 25; renderTable(); });
+  $("#btnCsv").addEventListener("click", () => download("drawline-" + dayKey(Date.now()) + ".csv", toCsv(filtered()), "text/csv"));
+  $("#btnJson").addEventListener("click", () => download("drawline-" + dayKey(Date.now()) + ".json",
+    JSON.stringify({ exportedAt: new Date().toISOString(), count: filtered().length, draws: filtered() }, null, 2), "application/json"));
+  $("#btnClear").addEventListener("click", () => {
+    if (!S.draws.length) return toast("Archive is already empty");
+    if (!window.confirm("Delete all " + S.draws.length + " stored draws from this browser?")) return;
+    Store.clear();
+    S.draws = []; S.latest = {}; S.visible = 25; S.polls = 0; S.errors = 0;
+    Store.patch({ draws: [], polls: 0, errors: 0 });
+    renderAll(); toast("Archive cleared", "good");
+  });
+
+  // data source
+  $("#sPreset").addEventListener("change", e => {
+    S.settings.preset = e.target.value;
+    const urls = presetUrls(S.settings.preset);
+    if (urls.length) S.settings.url = urls.join("\n");
+    persistSettings(); syncSettingsInputs();
+    if (S.settings.mode === "live") poll(true);
+  });
+  $("#sMode").addEventListener("change", e => {
+    S.settings.mode = e.target.value;
+    if (S.settings.mode === "live" && !splitUrls(S.settings.url).length) {
+      const urls = presetUrls(S.settings.preset);
+      if (urls.length) S.settings.url = urls.join("\n");
+    }
+    persistSettings(); syncSettingsInputs();
+    S.lastError = null; renderAll();
+    toast(S.settings.mode === "mock" ? "Using the embedded mock client" : "Using the live endpoint");
+    poll(true);
+  });
+  $("#sUrl").addEventListener("change", e => {
+    S.settings.url = e.target.value.trim();
+    S.settings.preset = "custom"; persistSettings(); syncSettingsInputs();
+    if (S.settings.mode === "live") poll(true);
+  });
+  $("#sInterval").addEventListener("input", e => {
+    S.settings.intervalSec = Number(e.target.value); persistSettings();
+    $("#intervalLabel").textContent = S.settings.intervalSec + "s"; scheduleNext(); renderStatus();
+  });
+  $("#sHidden").addEventListener("change", e => { S.settings.pauseHidden = e.target.checked; persistSettings(); });
+  $("#sNotify").addEventListener("change", e => { S.settings.notify = e.target.checked; persistSettings(); });
+
+  // frequency mode
+  $("#freqHot").addEventListener("click", () => { S.settings.freqMode = "hot"; persistSettings(); syncSettingsInputs(); renderTable(); });
+  $("#freqCold").addEventListener("click", () => { S.settings.freqMode = "cold"; persistSettings(); syncSettingsInputs(); renderTable(); });
+
+  // mock console
+  $("#mLatencyR").addEventListener("input", e => { S.settings.latency = Number(e.target.value); persistSettings(); syncSettingsInputs(); });
+  $("#mErrR").addEventListener("input", e => { S.settings.errorRate = Number(e.target.value); persistSettings(); syncSettingsInputs(); });
+  $("#mCadence").addEventListener("input", e => { S.settings.cadenceSec = Number(e.target.value); persistSettings(); syncSettingsInputs(); });
+  $("#btnForceDraw").addEventListener("click", () => {
+    if (S.settings.mode !== "mock") return toast("Switch to the mock client first", "bad");
+    Client.mock.tickOffset++; poll(true);
+  });
+  $("#btnForceErr").addEventListener("click", () => {
+    if (S.settings.mode !== "mock") return toast("Switch to the mock client first", "bad");
+    Client.mock.forceError = true; poll(true);
+  });
+  $("#btnSeed").addEventListener("click", async () => {
+    if (S.settings.mode !== "mock") return toast("Switch to the mock client first", "bad");
+    S.loading = true; renderStatus();
+    try {
+      const { draws, ms } = await Client.load({ mode: "mock", limit: 8 });
+      draws.forEach(d => { d.isNew = false; });
+      const fresh = mergeDraws(draws);
+      fresh.forEach(d => { d.isNew = false; });
+      S.lastOk = Date.now(); S.lastMs = ms; S.lastError = null; S.polls++;
+      logLine("ok", "seed · " + draws.length + " draws · " + ms + " ms");
+      toast("Seeded " + draws.length + " historical draws", "good");
+    } catch (err) { S.errors++; S.lastError = { status: err.status || 0, message: err.message }; logLine("no", err.message); }
+    finally { S.loading = false; persistDraws(); fillGameSelect(); renderAll(); }
+  });
+
+  // drawer + keys
+  $$("[data-close]").forEach(n => n.addEventListener("click", closeDrawer));
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") return closeDrawer();
+    const typing = /^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName);
+    if (typing) return;
+    if (e.key === "/") { e.preventDefault(); $("#fQuery").focus(); }
+    else if (e.key.toLowerCase() === "r") poll(true);
+    else if (e.key.toLowerCase() === "p") setPolling(!S.polling);
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && S.polling && S.settings.pauseHidden && Date.now() >= S.nextPollAt) poll(false);
+    renderStatus();
+  });
+  window.addEventListener("beforeunload", persistDraws);
+}
+
+/* ---------- 14. boot ---------- */
+function boot() {
+  applyTheme(S.settings.theme);
+  bind();
+  renderStorageBanner();
+  syncSettingsInputs();
+  fillGameSelect();
+  syncFilterInputs();
+  logLine("in", "client ready · storage: " + Store.backend + " · " + S.draws.length + " draws restored");
+  renderAll();
+  scheduleNext();
+  startTicker();
+  poll(true);
+}
+boot();
+
+/* expose for console tinkering / integration tests */
+window.Drawline = { S, Store, Client, MockLotteryAPI, poll, filtered, normalize, GAMES };
+</script>
+
+<script>
+(function(){
+  const P = 1 / 139838160;
+  const jackpotEl = document.getElementById('evJackpot');
+  const stakeEl = document.getElementById('evStake');
+  const bEl = document.getElementById('evB');
+  const valueEl = document.getElementById('evValue');
+  const roiEl = document.getElementById('evRoi');
+  const verdictEl = document.getElementById('evVerdict');
+  if(!jackpotEl || !stakeEl) return;
+
+  const euro = n => new Intl.NumberFormat('el-GR',{
+    style:'currency', currency:'EUR', maximumFractionDigits:6
+  }).format(n);
+  const num = n => new Intl.NumberFormat('el-GR',{
+    maximumFractionDigits:4
+  }).format(n);
+
+  function calc(){
+    const jackpot = Math.max(0, Number(jackpotEl.value)||0);
+    const stake = Math.max(0.01, Number(stakeEl.value)||0.01);
+    const b = jackpot / stake;
+    const evUnits = P*b - (1-P);
+    const evEuro = evUnits * stake;
+    const roi = evUnits * 100;
+
+    bEl.textContent = num(b) + '×';
+    valueEl.textContent = euro(evEuro);
+    roiEl.textContent = roi.toFixed(8) + '%';
+    verdictEl.textContent = evUnits >= 0 ? 'Θετικό EV στο jackpot-only μοντέλο' : 'Αρνητικό EV στο jackpot-only μοντέλο';
+    verdictEl.setAttribute('aria-label', 'Expected value result');
+  }
+  jackpotEl.addEventListener('input', calc);
+  stakeEl.addEventListener('input', calc);
+  calc();
+})();
+</script>
+
+<script data-pplx-inline-edit>
+(function () {
+  if (window === window.top) return;
+
+  const allowedParentOrigins = ["https://www.perplexity.ai","https://perplexity.ai","https://testing.perplexity.ai","https://staging.perplexity.ai","https://*.preview.i.perplexity.ai","http://perplexity.localhost","http://localhost:1420","http://127.0.0.1:1420","http://localhost:3000","http://127.0.0.1:3000","http://localhost:5173","http://127.0.0.1:5173"];
+  const MAX_FONT_BYTES = 500 * 1024;
+  const MAX_TOTAL_FONT_BYTES = 2 * 1024 * 1024;
+  let scrollForwarding = false;
+  let scrollRaf = 0;
+  let trustedTopOrigin = null;
+
+  // Allow entries like "https://*.preview.i.perplexity.ai" — the wildcard
+  // matches a single DNS label (no dots), so "https://*.foo" cannot stretch
+  // across multiple labels.
+  function matchesAllowedOrigin(origin) {
+    if (!origin) return false;
+    for (const entry of allowedParentOrigins) {
+      if (!entry.includes("*")) {
+        if (entry === origin) return true;
+        continue;
+      }
+      const pattern = new RegExp(
+        "^" +
+          entry.replace(/[.+?^${}()|[\]\\]/g, "\\$&").replace(/\*/g, "[^.]+") +
+          "$",
+      );
+      if (pattern.test(origin)) return true;
+    }
+    return false;
+  }
+
+  // Trust decision: when the sender is same-origin-visible (event.origin is a
+  // real origin like https://www.perplexity.ai) we trust event.origin directly.
+  // When event.origin is "null" (opaque broker srcdoc), we fall back to the
+  // broker's stamped `parentOrigin` to identify the top window. The fallback
+  // is claim-only — we rely on the browser's native `targetOrigin` enforcement
+  // on the response path (see postToTrustedTop) to ensure replies can't be
+  // delivered to anyone but the actual top window of that claimed origin.
+  function getTrustedParentOrigin(event) {
+    const forwardedParentOrigin =
+      typeof event.data.parentOrigin === "string" ? event.data.parentOrigin : null;
+    const parentOrigin = event.origin === "null" ? forwardedParentOrigin : event.origin;
+    return matchesAllowedOrigin(parentOrigin) ? parentOrigin : null;
+  }
+
+  // All responses go to window.top with targetOrigin = the allowlisted origin.
+  // An attacker that iframes us inside their own null-origin broker can claim
+  // any parentOrigin they like, but the browser will drop the reply whenever
+  // the real top's origin doesn't match — so the screenshot never leaves.
+  function postToTrustedTop(message) {
+    if (!trustedTopOrigin) return;
+    try {
+      window.top.postMessage(message, trustedTopOrigin);
+    } catch (_error) {}
+  }
+
+  function inlineAll(original, clone) {
+    if (original.nodeType !== 1 || clone.nodeType !== 1) return;
+
+    try {
+      const computedStyle = getComputedStyle(original);
+      // cssText on a computed style is the serialized declaration in modern
+      // Chromium/Safari — a single read beats enumerating ~400 longhand
+      // properties. Firefox returns "" here, so we fall back on empty.
+      const serialized = computedStyle.cssText;
+      if (serialized) {
+        clone.style.cssText = serialized;
+      } else {
+        const parts = new Array(computedStyle.length);
+        for (let index = 0; index < computedStyle.length; index += 1) {
+          const property = computedStyle[index];
+          parts[index] = `${property}:${computedStyle.getPropertyValue(property)};`;
+        }
+        clone.style.cssText = parts.join("");
+      }
+    } catch (_error) {}
+
+    const originalChildren = original.children;
+    const clonedChildren = clone.children;
+    for (
+      let index = 0;
+      index < originalChildren.length && index < clonedChildren.length;
+      index += 1
+    ) {
+      inlineAll(originalChildren[index], clonedChildren[index]);
+    }
+  }
+
+  function extractFontUrl(srcValue) {
+    const matches = [
+      ...srcValue.matchAll(
+        /url\(["']?([^"')]+)["']?\)(?:\s*format\(["']?([^"')]+)["']?\))?/gi,
+      ),
+    ];
+    if (matches.length === 0) return null;
+    const woff2 = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff2"));
+    if (woff2) return woff2[1];
+    const woff = matches.find((m) => m[2] && m[2].toLowerCase().includes("woff"));
+    if (woff) return woff[1];
+    return matches[0][1];
+  }
+
+  // Cache resolved font URL -> data URI across captures. Fonts on a page
+  // essentially never change, and a batch run emits multiple captures back to
+  // back — without this we'd refetch + re-base64 every time.
+  const fontDataUriCache = new Map();
+  const SRC_DECLARATION_RE = /src\s*:\s*[^;}]+/i;
+
+  async function fetchAsDataUri(url) {
+    if (fontDataUriCache.has(url)) return fontDataUriCache.get(url);
+    let dataUri = null;
+    try {
+      const response = await fetch(url, { mode: "cors", credentials: "omit" });
+      if (response.ok) {
+        const blob = await response.blob();
+        if (blob.size <= MAX_FONT_BYTES) {
+          dataUri = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () =>
+              resolve(typeof reader.result === "string" ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        }
+      }
+    } catch (_error) {
+      dataUri = null;
+    }
+    fontDataUriCache.set(url, dataUri);
+    return dataUri;
+  }
+
+  function collectFontFaceRuleTexts() {
+    const rules = [];
+    for (const sheet of document.styleSheets) {
+      let cssRules;
+      try {
+        cssRules = sheet.cssRules;
+      } catch (_error) {
+        continue;
+      }
+      if (!cssRules) continue;
+      for (const rule of cssRules) {
+        const cssText = rule.cssText || "";
+        if (cssText.startsWith("@font-face")) rules.push(cssText);
+      }
+    }
+    return rules;
+  }
+
+  async function buildInlinedFontCss() {
+    const ruleTexts = collectFontFaceRuleTexts();
+    if (ruleTexts.length === 0) return null;
+
+    const resolved = ruleTexts.map((cssText) => {
+      if (!SRC_DECLARATION_RE.test(cssText)) return null;
+      const srcMatch = cssText.match(/src\s*:\s*([^;}]+)[;}]/i);
+      if (!srcMatch) return null;
+      const url = extractFontUrl(srcMatch[1]);
+      if (!url) return null;
+      try {
+        return { cssText, url: new URL(url, document.baseURI).href };
+      } catch (_error) {
+        return null;
+      }
+    });
+
+    const dataUris = await Promise.all(
+      resolved.map((entry) => (entry ? fetchAsDataUri(entry.url) : Promise.resolve(null))),
+    );
+
+    const inlined = [];
+    let totalBytes = 0;
+    for (let index = 0; index < resolved.length; index += 1) {
+      const entry = resolved[index];
+      const dataUri = dataUris[index];
+      if (!entry || !dataUri) continue;
+      const approxBytes = dataUri.length * 0.75;
+      if (totalBytes + approxBytes > MAX_TOTAL_FONT_BYTES) break;
+      totalBytes += approxBytes;
+      inlined.push(entry.cssText.replace(SRC_DECLARATION_RE, `src: url("${dataUri}")`));
+    }
+    return inlined.length > 0 ? inlined.join("\n") : null;
+  }
+
+  function stripExternal(clone) {
+    const images = clone.querySelectorAll("img");
+    for (let index = 0; index < images.length; index += 1) {
+      const src = images[index].getAttribute("src");
+      if (src && !src.startsWith("data:")) images[index].removeAttribute("src");
+    }
+
+    const elements = clone.querySelectorAll("*");
+    for (let index = 0; index < elements.length; index += 1) {
+      const style = elements[index].style.cssText;
+      if (style && style.includes("url(")) {
+        elements[index].style.cssText = style.replace(
+          /url\(["']?(?!data:)[^)"']*["']?\)/gi,
+          "none",
+        );
+      }
+    }
+  }
+
+  function emitScroll() {
+    scrollRaf = 0;
+    if (!scrollForwarding) return;
+    postToTrustedTop({
+      type: "INLINE_EDIT_SCROLL",
+      scrollX: window.scrollX,
+      scrollY: window.scrollY,
+    });
+  }
+
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!scrollForwarding || scrollRaf) return;
+      scrollRaf = requestAnimationFrame(emitScroll);
+    },
+    { passive: true, capture: true },
+  );
+
+  async function handleCaptureRequest(event) {
+    const requestId = event.data.requestId;
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    function postResult(dataUrl) {
+      postToTrustedTop({
+        type: "INLINE_EDIT_SCREENSHOT_RESULT",
+        requestId,
+        dataUrl,
+        scrollX,
+        scrollY,
+      });
+    }
+
+    try {
+      // Wait for any pending web fonts to resolve so both inline metrics and
+      // the @font-face inlining below see the same loaded faces.
+      if (document.fonts && document.fonts.ready) {
+        try {
+          await document.fonts.ready;
+        } catch (_error) {}
+      }
+
+      const clone = document.documentElement.cloneNode(true);
+      inlineAll(document.documentElement, clone);
+
+      const removedNodes = clone.querySelectorAll("script,link[rel=\"stylesheet\"],style");
+      for (let index = 0; index < removedNodes.length; index += 1) {
+        removedNodes[index].remove();
+      }
+
+      stripExternal(clone);
+
+      // Re-embed web fonts as data-URI @font-face rules so the SVG rasterizer
+      // can resolve them — external font URLs aren't fetched during
+      // foreignObject rendering, which would otherwise force a fallback face
+      // and change text metrics.
+      const inlinedFontCss = await buildInlinedFontCss();
+      if (inlinedFontCss) {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = inlinedFontCss;
+        const head = clone.querySelector("head");
+        if (head) head.appendChild(styleEl);
+        else clone.insertBefore(styleEl, clone.firstChild);
+      }
+
+      const html = new XMLSerializer().serializeToString(clone);
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">` +
+        '<foreignObject width="100%" height="100%">' +
+        `<div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px;height:${height}px;overflow:hidden">` +
+        `<div style="position:relative;left:-${scrollX}px;top:-${scrollY}px">` +
+        html +
+        "</div></div></foreignObject></svg>";
+      const svgUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      const image = new Image();
+      image.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0);
+        postResult(canvas.toDataURL("image/png"));
+      };
+      image.onerror = function () {
+        postResult(null);
+      };
+      image.src = svgUrl;
+    } catch (_error) {
+      postResult(null);
+    }
+  }
+
+  window.addEventListener("message", function (event) {
+    if (!event.data) return;
+    // Only accept messages from the direct parent frame. Blocks sibling /
+    // unrelated-window postMessage senders that could otherwise reach us.
+    if (event.source !== window.parent) return;
+
+    const trustedParentOrigin = getTrustedParentOrigin(event);
+    if (!trustedParentOrigin) return;
+    trustedTopOrigin = trustedParentOrigin;
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_START") {
+      scrollForwarding = true;
+      emitScroll();
+      return;
+    }
+
+    if (event.data.type === "INLINE_EDIT_SCROLL_STOP") {
+      scrollForwarding = false;
+      if (scrollRaf) cancelAnimationFrame(scrollRaf);
+      scrollRaf = 0;
+      return;
+    }
+
+    if (event.data.type !== "INLINE_EDIT_CAPTURE_REQUEST") return;
+
+    handleCaptureRequest(event);
+  });
+})();
+
+
+</script></body>
+</html>

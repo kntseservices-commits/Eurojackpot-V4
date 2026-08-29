@@ -1,0 +1,1458 @@
+{
+ "game": "eurojackpot",
+ "generatedAt": "2026-08-25T12:37:13.332261+00:00",
+ "source": "https://www.veikkaus.fi/api/draw-results/v1/games/EJACKPOT",
+ "count": 58,
+ "draws": [
+  {
+   "id": "eurojackpot-983",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-08-21T17:04:00+00:00",
+   "numbers": [
+    25,
+    35,
+    45,
+    46,
+    50
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     4,
+     8
+    ]
+   },
+   "jackpot": 31000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 615339,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-982",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-08-18T17:04:00+00:00",
+   "numbers": [
+    15,
+    22,
+    24,
+    34,
+    42
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     4,
+     7
+    ]
+   },
+   "jackpot": 22000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 518779,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-981",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-08-14T17:04:00+00:00",
+   "numbers": [
+    5,
+    26,
+    28,
+    30,
+    40
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     3,
+     6
+    ]
+   },
+   "jackpot": 17000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 650365,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-980",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-08-11T17:04:00+00:00",
+   "numbers": [
+    4,
+    11,
+    12,
+    16,
+    30
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     8,
+     9
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 488063,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-979",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-08-07T17:04:00+00:00",
+   "numbers": [
+    1,
+    3,
+    6,
+    13,
+    23
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     7
+    ]
+   },
+   "jackpot": 32658025.0,
+   "jackpotWinners": 1,
+   "totalWinners": 860662,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-978",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-08-04T17:04:00+00:00",
+   "numbers": [
+    3,
+    17,
+    30,
+    35,
+    43
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     12
+    ]
+   },
+   "jackpot": 23000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 427210,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-977",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-31T17:04:00+00:00",
+   "numbers": [
+    4,
+    10,
+    20,
+    40,
+    41
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     4,
+     6
+    ]
+   },
+   "jackpot": 17000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 615620,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-976",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-28T17:04:00+00:00",
+   "numbers": [
+    11,
+    25,
+    40,
+    41,
+    45
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     5
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 402912,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-975",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-24T17:04:00+00:00",
+   "numbers": [
+    4,
+    6,
+    8,
+    17,
+    22
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     7,
+     10
+    ]
+   },
+   "jackpot": 71262143.1,
+   "jackpotWinners": 1,
+   "totalWinners": 943132,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-974",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-21T17:04:00+00:00",
+   "numbers": [
+    4,
+    8,
+    10,
+    17,
+    37
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     7
+    ]
+   },
+   "jackpot": 59000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 705440,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-973",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-17T17:04:00+00:00",
+   "numbers": [
+    6,
+    21,
+    31,
+    47,
+    48
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     9
+    ]
+   },
+   "jackpot": 50000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 701446,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-972",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-14T17:04:00+00:00",
+   "numbers": [
+    5,
+    6,
+    17,
+    34,
+    36
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     3,
+     11
+    ]
+   },
+   "jackpot": 40000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 539868,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-971",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-10T17:04:00+00:00",
+   "numbers": [
+    13,
+    25,
+    28,
+    42,
+    45
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     12
+    ]
+   },
+   "jackpot": 32000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 632647,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-970",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-07T17:04:00+00:00",
+   "numbers": [
+    6,
+    16,
+    24,
+    41,
+    46
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     3
+    ]
+   },
+   "jackpot": 23000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 477981,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-969",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-07-03T17:04:00+00:00",
+   "numbers": [
+    4,
+    9,
+    20,
+    25,
+    28
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     3
+    ]
+   },
+   "jackpot": 17000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 677181,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-968",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-30T17:04:00+00:00",
+   "numbers": [
+    12,
+    19,
+    34,
+    44,
+    50
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     3,
+     8
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 501357,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-967",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-26T17:04:00+00:00",
+   "numbers": [
+    17,
+    25,
+    35,
+    39,
+    41
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     9
+    ]
+   },
+   "jackpot": 87264546.9,
+   "jackpotWinners": 1,
+   "totalWinners": 931599,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-966",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-23T17:04:00+00:00",
+   "numbers": [
+    24,
+    27,
+    43,
+    48,
+    50
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     4,
+     12
+    ]
+   },
+   "jackpot": 74000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 572771,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-965",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-19T17:04:00+00:00",
+   "numbers": [
+    16,
+    27,
+    37,
+    42,
+    45
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     12
+    ]
+   },
+   "jackpot": 65000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 713765,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-964",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-16T17:04:00+00:00",
+   "numbers": [
+    9,
+    26,
+    29,
+    37,
+    42
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     7
+    ]
+   },
+   "jackpot": 54000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 585968,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-963",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-12T17:04:00+00:00",
+   "numbers": [
+    2,
+    4,
+    14,
+    18,
+    28
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     9,
+     11
+    ]
+   },
+   "jackpot": 45000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 705977,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-962",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-09T17:04:00+00:00",
+   "numbers": [
+    1,
+    14,
+    22,
+    39,
+    48
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     8,
+     11
+    ]
+   },
+   "jackpot": 35000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 477763,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-961",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-05T17:04:00+00:00",
+   "numbers": [
+    21,
+    23,
+    44,
+    47,
+    50
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     7
+    ]
+   },
+   "jackpot": 27000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 640866,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-960",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-06-02T17:04:00+00:00",
+   "numbers": [
+    2,
+    36,
+    38,
+    40,
+    46
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     7,
+     8
+    ]
+   },
+   "jackpot": 18000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 440830,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-959",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-29T17:04:00+00:00",
+   "numbers": [
+    3,
+    20,
+    21,
+    42,
+    49
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     6
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 691571,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-958",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-26T17:04:00+00:00",
+   "numbers": [
+    5,
+    11,
+    23,
+    33,
+    42
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     10,
+     12
+    ]
+   },
+   "jackpot": 120000000.0,
+   "jackpotWinners": 1,
+   "totalWinners": 1071650,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-957",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-22T17:04:00+00:00",
+   "numbers": [
+    5,
+    34,
+    35,
+    42,
+    46
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     3,
+     5
+    ]
+   },
+   "jackpot": 120000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 1512171,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-956",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-19T17:04:00+00:00",
+   "numbers": [
+    10,
+    36,
+    37,
+    39,
+    47
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     6
+    ]
+   },
+   "jackpot": 118000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 1038008,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-955",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-15T17:04:00+00:00",
+   "numbers": [
+    1,
+    32,
+    33,
+    36,
+    37
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     7,
+     12
+    ]
+   },
+   "jackpot": 102000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 1019690,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-954",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-12T17:04:00+00:00",
+   "numbers": [
+    7,
+    15,
+    19,
+    28,
+    35
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     3,
+     11
+    ]
+   },
+   "jackpot": 87000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 900169,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-953",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-08T17:04:00+00:00",
+   "numbers": [
+    3,
+    17,
+    18,
+    31,
+    41
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     6,
+     12
+    ]
+   },
+   "jackpot": 76000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 818914,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-952",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-05T17:04:00+00:00",
+   "numbers": [
+    1,
+    30,
+    33,
+    34,
+    43
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     10
+    ]
+   },
+   "jackpot": 64000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 583995,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-951",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-05-01T17:04:00+00:00",
+   "numbers": [
+    10,
+    11,
+    13,
+    16,
+    27
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     7
+    ]
+   },
+   "jackpot": 55000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 932590,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-950",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-04-28T17:04:00+00:00",
+   "numbers": [
+    19,
+    20,
+    41,
+    43,
+    46
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     7
+    ]
+   },
+   "jackpot": 45000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 537319,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-949",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-04-24T17:04:00+00:00",
+   "numbers": [
+    6,
+    21,
+    29,
+    39,
+    44
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     5
+    ]
+   },
+   "jackpot": 36000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 675273,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-948",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-04-21T17:04:00+00:00",
+   "numbers": [
+    31,
+    32,
+    36,
+    39,
+    47
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     7,
+     8
+    ]
+   },
+   "jackpot": 28000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 461290,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-947",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-04-17T17:04:00+00:00",
+   "numbers": [
+    16,
+    31,
+    35,
+    43,
+    44
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     9
+    ]
+   },
+   "jackpot": 22000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 632431,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-946",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-04-14T17:04:00+00:00",
+   "numbers": [
+    13,
+    22,
+    32,
+    46,
+    47
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     6,
+     7
+    ]
+   },
+   "jackpot": 14000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 458443,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-945",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-04-10T17:04:00+00:00",
+   "numbers": [
+    1,
+    6,
+    11,
+    18,
+    48
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     10,
+     12
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 533890,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-944",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-04-07T17:04:00+00:00",
+   "numbers": [
+    2,
+    4,
+    16,
+    23,
+    27
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     8
+    ]
+   },
+   "jackpot": 5000000.0,
+   "jackpotWinners": 2,
+   "totalWinners": 505113,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-943",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-04-03T17:04:00+00:00",
+   "numbers": [
+    9,
+    10,
+    18,
+    22,
+    37
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     11
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 1,
+   "totalWinners": 556760,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-942",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-31T17:04:00+00:00",
+   "numbers": [
+    5,
+    15,
+    18,
+    20,
+    35
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     7,
+     8
+    ]
+   },
+   "jackpot": 70718366.9,
+   "jackpotWinners": 1,
+   "totalWinners": 750333,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-941",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-27T18:04:00+00:00",
+   "numbers": [
+    21,
+    23,
+    25,
+    38,
+    40
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     7,
+     11
+    ]
+   },
+   "jackpot": 59000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 731544,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-940",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-24T18:04:00+00:00",
+   "numbers": [
+    9,
+    15,
+    23,
+    43,
+    48
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     3,
+     5
+    ]
+   },
+   "jackpot": 49000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 620231,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-939",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-20T18:04:00+00:00",
+   "numbers": [
+    2,
+    17,
+    21,
+    25,
+    30
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     6
+    ]
+   },
+   "jackpot": 40000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 794611,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-938",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-17T18:04:00+00:00",
+   "numbers": [
+    12,
+    13,
+    16,
+    17,
+    37
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     4,
+     11
+    ]
+   },
+   "jackpot": 30000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 523088,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-937",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-13T18:04:00+00:00",
+   "numbers": [
+    7,
+    23,
+    37,
+    44,
+    47
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     6
+    ]
+   },
+   "jackpot": 22000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 779786,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-936",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-10T18:04:00+00:00",
+   "numbers": [
+    2,
+    3,
+    17,
+    18,
+    28
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     4,
+     10
+    ]
+   },
+   "jackpot": 15000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 494882,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-935",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-06T18:04:00+00:00",
+   "numbers": [
+    8,
+    17,
+    26,
+    31,
+    47
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     6
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 604495,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-934",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-03-03T18:04:00+00:00",
+   "numbers": [
+    1,
+    9,
+    14,
+    35,
+    49
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     10
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 1,
+   "totalWinners": 449117,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-933",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-02-27T18:04:00+00:00",
+   "numbers": [
+    7,
+    17,
+    19,
+    28,
+    47
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     7
+    ]
+   },
+   "jackpot": 74788336.0,
+   "jackpotWinners": 1,
+   "totalWinners": 1181828,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-932",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-02-24T18:04:00+00:00",
+   "numbers": [
+    4,
+    5,
+    26,
+    38,
+    48
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     9
+    ]
+   },
+   "jackpot": 61000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 648332,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-931",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-02-20T18:04:00+00:00",
+   "numbers": [
+    11,
+    17,
+    23,
+    36,
+    40
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     6
+    ]
+   },
+   "jackpot": 52000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 867049,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-930",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-02-17T18:04:00+00:00",
+   "numbers": [
+    8,
+    23,
+    39,
+    40,
+    44
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     6,
+     7
+    ]
+   },
+   "jackpot": 41000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 552025,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-929",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-02-13T18:04:00+00:00",
+   "numbers": [
+    1,
+    21,
+    44,
+    45,
+    46
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     2,
+     7
+    ]
+   },
+   "jackpot": 31000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 713370,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-928",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-02-10T18:04:00+00:00",
+   "numbers": [
+    12,
+    19,
+    34,
+    39,
+    47
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     4,
+     5
+    ]
+   },
+   "jackpot": 22000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 545067,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-927",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-02-06T18:04:00+00:00",
+   "numbers": [
+    8,
+    14,
+    38,
+    41,
+    48
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     11
+    ]
+   },
+   "jackpot": 17000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 536478,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
+  {
+   "id": "eurojackpot-926",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-02-03T18:04:00+00:00",
+   "numbers": [
+    3,
+    20,
+    27,
+    37,
+    44
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     1,
+     2
+    ]
+   },
+   "jackpot": 10000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 438346,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  }
+ ]
+}
