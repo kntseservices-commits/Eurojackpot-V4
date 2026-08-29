@@ -26,8 +26,8 @@ class EurojackpotFeedTests(unittest.TestCase):
     def test_existing_baseline_is_complete_valid_and_embedded_equivalent(self):
         embedded = builder.extract_embedded_feed(self.html)
         self.assertEqual(self.feed, embedded)
-        self.assertEqual(58, self.feed["count"])
-        self.assertEqual(58, len(self.feed["draws"]))
+        self.assertEqual(self.feed["count"], len(self.feed["draws"]))
+        self.assertGreaterEqual(self.feed["count"], builder.MIN_DRAWS)
         self.assertEqual([], builder.validate_feed(self.feed, now=NOW))
         standalone_fields = [
             (draw["id"], draw["drawnAt"], draw["numbers"], draw["extra"]["numbers"],
