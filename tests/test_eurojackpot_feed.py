@@ -79,6 +79,72 @@ class EurojackpotFeedTests(unittest.TestCase):
         self.assertEqual(0, draw["jackpotWinners"])
         self.assertEqual(9, draw["totalWinners"])
 
+    def test_mapping_normalizes_integer_like_upstream_strings_before_validation(self):
+        raw = {
+            "id": "983", "drawTime": "1787331840000",
+            "results": [{"primary": ["25", "35", "45", "46", "50"], "secondary": ["4", "8"]}],
+            "prizeTiers": [{"id": "1", "shareAmount": "3100000000", "shareCount": "0"}, {"id": "2", "shareCount": "9"}],
+            "jackpots": [{"id": "PRIMARY", "amount": "999"}],
+        }
+        draw = builder.map_record(raw)
+        self.assertEqual([25, 35, 45, 46, 50], draw["numbers"])
+        self.assertEqual([4, 8], draw["extra"]["numbers"])
+        self.assertEqual(31000000.0, draw["jackpot"])
+        self.assertEqual(0, draw["jackpotWinners"])
+        self.assertEqual(9, draw["totalWinners"])
+        self.assertEqual([], builder.validate_draw(draw))
+
+    def test_mapping_rejects_non_integer_upstream_values(self):
+        raw = {
+            "id": "983", "drawTime": "1787331840000.5",
+            "results": [{"primary": ["25", "35", "45", "46", "50"], "secondary": ["4", "8"]}],
+            "prizeTiers": [], "jackpots": [],
+        }
+        with self.assertRaisesRegex(ValueError, "drawTime is not an integer"):
+            builder.map_record(raw)
+        raw["drawTime"] = "1787331840000"
+        raw["results"][0]["primary"][0] = "25.0"
+        with self.assertRaisesRegex(ValueError, "primary number is not an integer"):
+            builder.map_record(raw)
+
+    def test_baseline_workbooks_are_discovered_and_parse_read_only(self):
+        draws, reports = builder.load_baseline_draws()
+        self.assertEqual(["Eurojackpot_2025.xlsx", "Eurojackpot_2026.xlsx"], [report["path"].name for report in reports])
+        self.assertTrue(draws)
+        self.assertTrue(all(report["valid"] > 0 for report in reports))
+        self.assertTrue(all(report["dateRange"] is not None for report in reports))
+        self.assertTrue(all(not builder.validate_draw(draw) for draw in draws))
+
+    def test_tabular_baseline_rows_normalize_and_pass_strict_validation(self):
+        rows = iter([
+            ("Draw number", "Draw date", "Number 1", "Number 2", "Number 3", "Number 4", "Number 5", "Euro 1", "Euro 2", "Jackpot", "Jackpot winners"),
+            ("900", "2025-01-03", "1", "2", "3", "4", "5", "6", "7", "17000000", "0"),
+        ])
+        original_rows = builder._xlsx_rows
+        builder._xlsx_rows = lambda _path: rows
+        try:
+            draws, report = builder.parse_baseline_workbook("unused.xlsx")
+        finally:
+            builder._xlsx_rows = original_rows
+        self.assertEqual(1, report["valid"])
+        self.assertEqual(("2025-01-03", "2025-01-03"), report["dateRange"])
+        self.assertEqual([], report["skipped"])
+        self.assertEqual([1, 2, 3, 4, 5], draws[0]["numbers"])
+        self.assertEqual([6, 7], draws[0]["extra"]["numbers"])
+        self.assertEqual([], builder.validate_draw(draws[0]))
+
+    def test_baseline_merge_deduplicates_and_upstream_takes_precedence(self):
+        upstream = copy.deepcopy(self.feed["draws"][0])
+        upstream["source"] = "veikkaus.fi"
+        baseline = copy.deepcopy(upstream)
+        baseline["id"] = "eurojackpot-999999"
+        baseline["source"] = "baseline"
+        baseline["jackpot"] = 1.0
+        baseline["numbers"] = [1, 2, 3, 4, 5]
+        merged = builder.merge_draws([baseline], [], [upstream])
+        self.assertEqual(1, len(merged))
+        self.assertEqual(upstream, merged[0])
+
     def test_failures_are_diagnostic_and_preserve_last_good_files(self):
         with tempfile.TemporaryDirectory() as directory:
             directory = Path(directory)
@@ -96,7 +162,10 @@ class EurojackpotFeedTests(unittest.TestCase):
             self.assertEqual(before_json, json_path.read_bytes())
             self.assertEqual(before_html, html_path.read_bytes())
 
-            feed, diagnostics = builder.build_feed(fetcher=lambda _url: [{"id": "bad"}], today=NOW.date(), now=NOW)
+            feed, diagnostics = builder.build_feed(
+                fetcher=lambda _url: [{"id": "bad"}], today=NOW.date(), now=NOW,
+                baseline_paths=(), existing_path=directory / "missing.json",
+            )
             self.assertEqual([], feed["draws"])
             self.assertEqual(30, len(diagnostics))
             self.assertTrue(all("record" in message for message in diagnostics))
