@@ -1,15 +1,30 @@
-name: Eurojackpot Feed Check
+name: Eurojackpot Feed Auto Update
 
 on:
   workflow_dispatch:
 
+  schedule:
+    # Tuesday and Friday, every 30 minutes from 18:00–22:30 UTC.
+    # This gives multiple chances for the official results to become available.
+    - cron: '*/30 18-22 * * 2,5'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: eurojackpot-feed-update
+  cancel-in-progress: false
+
 jobs:
-  test-and-build:
+  test-build-publish:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -22,5 +37,39 @@ jobs:
       - name: Run Eurojackpot feed builder
         run: python EuroJackpot_EV_Set/build_eurojackpot_feed.py
 
-      - name: Check repository diff
-        run: git diff --check
+      - name: Validate generated changes
+        run: |
+          git diff --check
+          python -m unittest discover -s tests -v
+
+      - name: Detect feed changes
+        id: changes
+        shell: bash
+        run: |
+          if [[ -n "$(git status --porcelain -- \
+            EuroJackpot_EV_Set/eurojackpot.json \
+            EuroJackpot_EV_Set/index.html)" ]]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit updated feed
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            EuroJackpot_EV_Set/eurojackpot.json \
+            EuroJackpot_EV_Set/index.html
+
+          git commit -m "Update Eurojackpot feed"
+
+      - name: Push updated feed
+        if: steps.changes.outputs.changed == 'true'
+        run: git push origin HEAD:main
+
+      - name: No feed update required
+        if: steps.changes.outputs.changed == 'false'
+        run: echo "Eurojackpot feed is already up to date."
