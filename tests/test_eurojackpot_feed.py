@@ -29,6 +29,10 @@ class EurojackpotFeedTests(unittest.TestCase):
         self.assertEqual(self.feed["count"], len(self.feed["draws"]))
         self.assertGreaterEqual(self.feed["count"], builder.MIN_DRAWS)
         self.assertEqual([], builder.validate_feed(self.feed, now=NOW))
+        self.assertTrue(all(not builder.validate_draw(draw) for draw in self.feed["draws"]))
+        self.assertEqual(len(self.feed["draws"]), len({draw["id"] for draw in self.feed["draws"]}))
+        draw_times = [builder._parse_timestamp(draw["drawnAt"]) for draw in self.feed["draws"]]
+        self.assertTrue(all(left >= right for left, right in zip(draw_times, draw_times[1:])))
         standalone_fields = [
             (draw["id"], draw["drawnAt"], draw["numbers"], draw["extra"]["numbers"],
              draw["jackpot"], draw["jackpotWinners"])
@@ -40,8 +44,19 @@ class EurojackpotFeedTests(unittest.TestCase):
             for draw in embedded["draws"]
         ]
         self.assertEqual(standalone_fields, embedded_fields)
-        self.assertEqual(("eurojackpot-983", "2026-08-21T17:04:00+00:00", [25, 35, 45, 46, 50], [4, 8], 31000000.0, 0), standalone_fields[0])
-        self.assertEqual(("eurojackpot-979", "2026-08-07T17:04:00+00:00", [1, 3, 6, 13, 23], [5, 7], 32658025.0, 1), standalone_fields[4])
+        draws_by_id = {draw["id"]: draw for draw in self.feed["draws"]}
+        self.assertEqual(
+            ("2026-08-07T17:04:00+00:00", [1, 3, 6, 13, 23], [5, 7], 32658025.0, 1),
+            (
+                draws_by_id["eurojackpot-979"]["drawnAt"], draws_by_id["eurojackpot-979"]["numbers"],
+                draws_by_id["eurojackpot-979"]["extra"]["numbers"], draws_by_id["eurojackpot-979"]["jackpot"],
+                draws_by_id["eurojackpot-979"]["jackpotWinners"],
+            ),
+        )
+        baseline_draws, _reports = builder.load_baseline_draws()
+        historical = next(draw for draw in baseline_draws if draw["drawnAt"].startswith("2025-12-30"))
+        self.assertEqual([20, 23, 18, 27, 10], historical["numbers"])
+        self.assertEqual([1, 6], historical["extra"]["numbers"])
 
     def test_validation_rejects_each_strict_rule(self):
         cases = [
