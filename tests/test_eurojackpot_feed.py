@@ -77,7 +77,9 @@ class EurojackpotFeedTests(unittest.TestCase):
         incomplete["draws"] = incomplete["draws"][:57]
         incomplete["count"] = 57
         self.assertTrue(any("minimum is 58" in error for error in builder.validate_feed(incomplete, now=NOW)))
-        self.assertTrue(any("older than 10 days" in error for error in builder.validate_feed(self.feed, now=NOW + dt.timedelta(days=11))))
+        latest_draw = builder._parse_timestamp(self.feed["draws"][0]["drawnAt"])
+        stale_now = latest_draw + dt.timedelta(days=builder.MAX_AGE_DAYS + 1)
+        self.assertTrue(any("older than 10 days" in error for error in builder.validate_feed(self.feed, now=stale_now)))
 
     def test_mapping_preserves_v4_jackpot_and_winner_fields(self):
         raw = {
