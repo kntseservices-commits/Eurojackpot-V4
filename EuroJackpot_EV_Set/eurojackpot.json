@@ -1,9 +1,34 @@
 {
  "game": "eurojackpot",
- "generatedAt": "2026-10-28T00:49:26.421604+00:00",
+ "generatedAt": "2026-10-30T21:47:58.249642+00:00",
  "source": "https://www.veikkaus.fi/api/draw-results/v1/games/EJACKPOT",
- "count": 190,
+ "count": 191,
  "draws": [
+  {
+   "id": "eurojackpot-1003",
+   "game": "eurojackpot",
+   "gameName": "Eurojackpot",
+   "drawnAt": "2026-10-30T18:04:00+00:00",
+   "numbers": [
+    21,
+    26,
+    37,
+    39,
+    42
+   ],
+   "extra": {
+    "label": "Euro numbers",
+    "numbers": [
+     5,
+     7
+    ]
+   },
+   "jackpot": 24000000.0,
+   "jackpotWinners": 0,
+   "totalWinners": 768802,
+   "currency": "EUR",
+   "source": "veikkaus.fi"
+  },
   {
    "id": "eurojackpot-1002",
    "game": "eurojackpot",
